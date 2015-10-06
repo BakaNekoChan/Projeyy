@@ -1,35 +1,35 @@
-package projey; 
- 
-import java.util.ArrayList; 
+package projey;
+
+import java.util.ArrayList;
 import java.util.Hashtable;
- 
-public class BrutForce { 
-	
+
+public class BrutForce {
+
 	private Hashtable<ArrayList<Integer>, Integer> tab;
- 
-    /*entr�es: demi-matrice contenant les distances entre les diff�rentes villes 
-    sorties: retourne la valeur du chemin le plus cours 
-    execution: calcul la valeur de chaque chemin et stocke le plus court  
-    */ 
-	public int brutForce (int [][] mat){ 
-		
-        ArrayList<Integer> villes= new ArrayList<Integer>(); 
-        
-        for(int i=0; i<mat.length; i++){ //cr�ation de la liste de villes 
-            villes.add(i); 
-        } 
-        
+
+    /*entrees: demi-matrice contenant les distances entre les differentes villes
+    sorties: retourne la valeur du chemin le plus cours
+    execution: calcul la valeur de chaque chemin et stocke le plus court
+    */
+	public int brutForce (int [][] mat){
+
+        ArrayList<Integer> villes= new ArrayList<Integer>();
+
+        for(int i=0; i<mat.length; i++){ //creation de la liste de villes 
+            villes.add(i);
+        }
+
         ArrayList<ArrayList<Integer>> cheminsTab = new ArrayList<ArrayList<Integer>>();
         generate(villes, cheminsTab);
         int min=0;
-        
+
         for(int i=0; i<cheminsTab.size(); i++){
         	int x=0;
-        	
+
         	for(int j=1; j<cheminsTab.get(i).size()){
         		x+=mat[cheminsTab.get(i).get(j-1)][cheminsTab.get(i).get(j)];
         	}
-        	
+
         	if (min=0){
         		min=x;
         	}
@@ -38,8 +38,8 @@ public class BrutForce {
         	}
         }
         return min;
-    } 
-    
+    }
+
 	//methode qui permet de générer un tableau de tous les chemins possible (cheminsTab) par rapport à une liste de villes données (représentées par un tableau de nombres)
 	  public static void generateTree (ArrayList<Integer> listeVilles, ArrayList<ArrayList<Integer>> cheminsTab){
 	    generateTree(listeVilles, cheminsTab, new ArrayList<Integer>());
@@ -61,6 +61,4 @@ public class BrutForce {
 	        }
 	    }
 	  }
-} 
- 
- 
+}
