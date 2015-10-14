@@ -2,9 +2,9 @@ package projeyy.brutforce;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadMXBean;
-import projeyy.generator.*;
-import projeyy.brutforce.*;
 import java.util.ArrayList;
+
+import projeyy.generator.*;
 
 public class Main{
 

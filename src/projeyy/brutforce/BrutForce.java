@@ -1,11 +1,8 @@
 package projeyy.brutforce;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
 
 public class BrutForce {
-
-	private Hashtable<ArrayList<Integer>, Integer> tab;
 
 	/*entrees: demi-matrice contenant les distances entre les differentes villes
 	sorties: retourne la valeur du chemin le plus cours
