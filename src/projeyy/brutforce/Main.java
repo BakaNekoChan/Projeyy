@@ -16,7 +16,7 @@ public class Main{
     ThreadMXBean bean = ManagementFactory.getThreadMXBean();
     long t1 = bean.getCurrentThreadUserTime();
 
-    for(int i = 0; i < 10; i++){
+    for(int i = 0; i < 8; i++){
       listeVilles.add(i);
     }
     double[][] matriceDistances = Generator.generateMatrice(listeVilles.size());
