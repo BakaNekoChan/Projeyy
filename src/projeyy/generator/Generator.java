@@ -17,7 +17,7 @@ public class Generator {
       j = 0;
       while(j < nbPoints){
         if(i == j){
-          resultat[i][j] = 0;
+          resultat[i][j] = -1;
         }
         else{
           resultat [i][j] = Math.sqrt(Math.pow(plan[i][0]-plan[j][0], 2) + Math.pow(plan[i][1]-plan[j][1], 2));
