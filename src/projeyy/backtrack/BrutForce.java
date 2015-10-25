@@ -8,36 +8,11 @@ import projeyy.generator.*;
 //d'exécution et empêche la surcharge de la mémoire.
 
 public class BrutForce {
-	private static final int NOMBRE_VILLES = 8;
+	private static final int NOMBRE_VILLES = 15;
 	private static int nombreExec = 0;
 	private static ArrayList<ArrayList<Integer>> listeCheminsOptimums = new ArrayList<ArrayList<Integer>>();
 	private static double distanceOptimum;
 	private static double[][] maMatrice = Generator.generateMatrice(NOMBRE_VILLES);
-	
-	
-	
-	
-	
-	
-	
-	
-	static ArrayList maListe = new ArrayList();
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 	public static void main(String[] args) {
 		generateTree();
@@ -52,7 +27,8 @@ public class BrutForce {
 		for(int i = 0; i < NOMBRE_VILLES; i++){
 			listeVilles.add(i);
 		}
-		distanceOptimum = calculerDistance(listeVilles);
+		System.out.println(glouton(listeVilles));
+		distanceOptimum = calculerDistance(glouton(listeVilles));
 		listeCheminsOptimums.add(listeVilles);
 		
 		
@@ -79,7 +55,7 @@ public class BrutForce {
 				ArrayList<Integer> cheminActuelS = new ArrayList<Integer>(cheminActuel);
 				cheminActuelS.add(listeVilles.get(i));
 				x = listeVilles.remove(i);
-				if(calculerDistance(cheminActuelS) < distanceOptimum){
+				if(calculerDistance(cheminActuelS) <= distanceOptimum){
 					generateTree(listeVilles, cheminActuelS);
 				}
 				listeVilles.add(i,x);
@@ -94,5 +70,24 @@ public class BrutForce {
 		}
 		distance += maMatrice[listeVilles.get(0)][listeVilles.get(listeVilles.size()-1)];
 		return distance;
+	}
+	
+	private static ArrayList<Integer> glouton(ArrayList<Integer> listeVilles){
+		ArrayList<Integer> monCheminGlouton = new ArrayList<Integer>();
+		ArrayList<Integer> listeVillesRestantes = new ArrayList<Integer>(listeVilles);
+		monCheminGlouton.add(listeVillesRestantes.remove(0));
+		for(int j = 0; j < NOMBRE_VILLES-1; j++){
+			double distanceMinimum = Double.MAX_VALUE;
+			Integer villeMoinsLoin = 0;
+			for(Integer i:listeVillesRestantes){
+				if(maMatrice[monCheminGlouton.get(monCheminGlouton.size()-1)][i] < distanceMinimum){
+					distanceMinimum = maMatrice[monCheminGlouton.get(monCheminGlouton.size()-1)][i];
+					villeMoinsLoin = i;
+				}
+			}
+			listeVillesRestantes.remove((Integer)villeMoinsLoin);
+			monCheminGlouton.add(villeMoinsLoin);
+		}
+		return monCheminGlouton;
 	}
 }

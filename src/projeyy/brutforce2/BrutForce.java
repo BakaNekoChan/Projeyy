@@ -3,44 +3,25 @@ package projeyy.brutforce2;
 import java.util.ArrayList;
 import projeyy.generator.*;
 
-//Cette version de BruteForce ne stocke pas tous les chemins dans un tableau, et sectionnes les branches de l'arbre des chemins
-//quand la distance est déjà plus longue que celle minimum en cours de génération, ce qui permet d'améliorer le temps
-//d'exécution et empêche la surcharge de la mémoire.
+//Cette version de BruteForce ne stocke pas tous les chemins dans un tableau.
 
 public class BrutForce {
-	private static final int NOMBRE_VILLES = 8;
+	private static final int NOMBRE_VILLES = 5;
 	private static int nombreExec = 0;
 	private static ArrayList<ArrayList<Integer>> listeCheminsOptimums = new ArrayList<ArrayList<Integer>>();
 	private static double distanceOptimum;
 	private static double[][] maMatrice = Generator.generateMatrice(NOMBRE_VILLES);
-	
-	
-	
-	
-	
-	
-	
-	
-	static ArrayList maListe = new ArrayList();
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 	public static void main(String[] args) {
 		generateTree();
+		//Décomenter pour afficher la matrice.
+		/*for(int i = 0; i < maMatrice.length; i++){
+			for(int j = 0; j < maMatrice.length; j++){
+				System.out.print(maMatrice[i][j] + " ");
+			}
+			System.out.println();
+		}*/
+		
 		System.out.println(listeCheminsOptimums);
 		System.out.println(distanceOptimum);
 		System.out.println(nombreExec);		
