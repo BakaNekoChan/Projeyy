@@ -1,5 +1,12 @@
 package projeyy.reparationLocale;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryMXBean;
 import java.util.ArrayList;
 
 import projeyy.generator.Generator;
@@ -7,6 +14,8 @@ import projeyy.generator.Generator;
 public class Reparation {
 	private static final int NOMBRE_VILLES = 50;
 	private static double[][] maMatrice = Generator.generateMatrice(NOMBRE_VILLES);
+	private static PrintWriter pw = createPrintWriter();
+	private static MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
 	
 	public static void main(String[] args) {
 		ArrayList<Integer> chemin = new ArrayList<Integer>();
@@ -14,6 +23,7 @@ public class Reparation {
 			chemin.add(i);
 		}
 		reparation(chemin, 500);
+		pw.close();
 	}
 
 
@@ -21,6 +31,9 @@ public class Reparation {
 	public static void reparation(ArrayList<Integer> cheminDepart, int nombreIteration){
 		if(cheminDepart.size() > 3){
 			for(int i = 0; i < nombreIteration; i++){
+				pw.println(memoryBean.getHeapMemoryUsage().getUsed()); //écriture de la mémoire dans le fichier.
+
+				
 				ArrayList<Integer> cheminRepare = new ArrayList<Integer>(cheminDepart);
 				//Selection de la première arrête.
 				int point1 = (int)(Math.random() * (double)cheminDepart.size());
@@ -50,5 +63,17 @@ public class Reparation {
 		}
 		distance += maMatrice[listeVilles.get(0)][listeVilles.get(listeVilles.size()-1)];
 		return distance;
+	}
+	
+	private static PrintWriter createPrintWriter(){ //fonction qui permet d'initialiser l'ouverture du fichier.
+		PrintWriter pw = null;
+		try{
+			pw = new PrintWriter (new BufferedWriter (new FileWriter (new File("monGraph"))));
+		}
+		catch(IOException o){
+			System.out.println("ça marche pas");
+			System.exit(0);
+		}
+		return pw;
 	}
 }

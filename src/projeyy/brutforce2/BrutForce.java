@@ -1,16 +1,26 @@
 package projeyy.brutforce2;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryMXBean;
 import java.util.ArrayList;
 import projeyy.generator.*;
 
 //Cette version de BruteForce ne stocke pas tous les chemins dans un tableau.
 
 public class BrutForce {
-	private static final int NOMBRE_VILLES = 5;
+	private static final int NOMBRE_VILLES = 9;
 	private static int nombreExec = 0;
 	private static ArrayList<ArrayList<Integer>> listeCheminsOptimums = new ArrayList<ArrayList<Integer>>();
 	private static double distanceOptimum;
 	private static double[][] maMatrice = Generator.generateMatrice(NOMBRE_VILLES);
+	private static MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
+	private static PrintWriter pw = createPrintWriter();
+
 
 	public static void main(String[] args) {
 		generateTree();
@@ -25,6 +35,7 @@ public class BrutForce {
 		System.out.println(listeCheminsOptimums);
 		System.out.println(distanceOptimum);
 		System.out.println(nombreExec);		
+		pw.close();
 	}
 	
 	//méthode qui permet de générer les chemins les plus courts disponnibles dans le tableau static listCheminsOptimums.
@@ -43,7 +54,8 @@ public class BrutForce {
 	//methode annexe utilisée par le premier generateTree
 	private static void generateTree (ArrayList<Integer> listeVilles,ArrayList<Integer> cheminActuel){
 		int x = 0;
-		//System.out.println(cheminActuel);
+		
+		pw.println(memoryBean.getHeapMemoryUsage().getUsed()); //écriture de la mémoire dans le fichier.
 		nombreExec ++;
 		if(listeVilles.isEmpty()){
 			if(calculerDistance(cheminActuel) < distanceOptimum){
@@ -75,5 +87,17 @@ public class BrutForce {
 		}
 		distance += maMatrice[listeVilles.get(0)][listeVilles.get(listeVilles.size()-1)];
 		return distance;
+	}
+	
+	private static PrintWriter createPrintWriter(){ //fonction qui permet d'initialiser l'ouverture du fichier.
+		PrintWriter pw = null;
+		try{
+			pw = new PrintWriter (new BufferedWriter (new FileWriter (new File("monGraph"))));
+		}
+		catch(IOException o){
+			System.out.println("ça marche pas");
+			System.exit(0);
+		}
+		return pw;
 	}
 }
