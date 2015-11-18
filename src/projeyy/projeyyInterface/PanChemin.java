@@ -7,60 +7,64 @@ import javax.swing.JPanel;
 import projeyy.generator.Generator;
 
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 public class PanChemin extends JPanel {
 
-	int x;
-	int y;
-	int x2;
-	int y2;
+	private ArrayList<Point> points = new ArrayList<Point>();
+	private ArrayList<Arete> aretes = new ArrayList<Arete>();
+	private static final int taille_point = 25;
 	
-	// mise en place de la matrice distance avec generator, matrice xy recupère l'emplacement des différents points.	
+	// mise en place de la matrice distance avec generator, matrice xy recupÃ¨re l'emplacement des diffÃ©rents points.	
 		int nbPointMatrice = 5;
 		Generator matrice = new Generator();
 		double[][] tabDistance = matrice.generateMatrice(nbPointMatrice);
 	
 	public void paintComponent(Graphics g){                
-		x = (int) (Math.random()*(400));
-		y = (int) (Math.random()*(500));
+		
+		rempliArray(nbPointMatrice);
 		
 		for(int i = 0; i < nbPointMatrice; i++){
 			
-			x2 = (int) (Math.random()*(400));
-			y2 = (int) (Math.random()*(500));
+			paintSommet(g,i);
 			
-			paintSommet(g,x,y);
 			if( i < nbPointMatrice - 1){
-				paintArette(g,x,y,x2,y2);
+				paintArette(g,i);
 			}
-			x = x2; y = y2;
 		} 
 	  } 
 	
-	private void paintSommet(Graphics g, int x, int y){
+	private void paintSommet(Graphics g, int i){
 		g.setColor(Color.RED);
-		g.fillOval(x - 25/2, y - 25/2, 25, 25);
+		g.fillOval(points.get(i).getX() - taille_point/2, points.get(i).getY() - taille_point/2, taille_point, taille_point);
 	}
 	
-	private void paintArette(Graphics g, int x, int y, int x2, int y2){
-		g.drawLine(x, y, x2, y2);
+	private void paintArette(Graphics g, int i){
+		g.setColor(Color.RED);
+		g.drawLine(aretes.get(i).getX(),aretes.get(i).getY(),aretes.get(i).getX2(),aretes.get(i).getY2());
 	}
 	
-	//getteur
-	public int getPosX(){
-		return x;
+	
+	
+	//mÃ©thode pour ArrayList
+	
+	// rempli les ArrayList
+	public void rempliArray(int nbPoint){
+		setPoint((int) (Math.random()*(390)),(int) (Math.random()*(490)));
+		
+		for (int i = 0; i < nbPoint; i++){
+			setPoint((int) (Math.random()*(390)),(int) (Math.random()*(490)));
+			setArete(points.get(i).getX(),points.get(i).getY(),points.get(i+1).getX(),points.get(i+1).getY());
+		}
 	}
 	
-	public int getPosY(){
-		return y;
+	// ajout d'un point
+	public void setPoint(int x, int y){
+		points.add(new Point(x,y));
 	}
-	
-	//setteur
-	public void setPosX(int x){
-		this.x = x;
-	}
-	public void setPosY(int y){
-		this.y = y;
+	// ajout d'une arete
+	public void setArete(int x, int y, int x2, int y2){
+		aretes.add(new Arete(x,y,x2,y2));
 	}
 	
 	
