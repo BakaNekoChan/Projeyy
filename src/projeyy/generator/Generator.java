@@ -21,9 +21,8 @@ public class Generator {
 	//Pour l'utilister, il suffit de donner le nombre de points que l'on veut traiter, et le générateur renvoie une matrice carrée de taille nbPoints avec la distance entre chaque points.
 	public static double[][] generateMatrice (ArrayList<Point> mesPoints){
 		double [][] resultat = new double[mesPoints.size()][mesPoints.size()];
-		
 		for(int i = 0; i<mesPoints.size();i++){
-			for(int j = 0; j<mesPoints.size(); i++){
+			for(int j = 0; j<mesPoints.size(); j++){
 				if(i == j){
 					resultat[i][j] = -1;
 				}

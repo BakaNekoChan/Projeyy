@@ -5,6 +5,7 @@ import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import projeyy.brutforceObservable.BrutForce;
 import projeyy.generator.Generator;
 
 import java.awt.Graphics;
@@ -68,17 +69,17 @@ public class PanChemin extends JPanel implements Observer {
 	//méthode Observer 
 	
 	public void update(Observable o, Object arg){
-		if(o instanceof(brutForce)){
-			points = new ArrayList<Point>(o.getPoints()); // Retourne ArrayList<Point>
-			ArrayList<Integer> ordrePoints = new ArrayList<Integer>(o.getPlusCourtChemin());// Retourne ArrayList<Integer>
-			nbPoints = mesPoints.size();
+		if(o instanceof BrutForce){
+			points = new ArrayList<Point>(((BrutForce) o).getPoints()); // Retourne ArrayList<Point>
+			ArrayList<Integer> ordrePoints = new ArrayList<Integer>(((BrutForce) o).getPlusCourtChemin());// Retourne ArrayList<Integer>
+			nbPoints = points.size();
+			
+			for(int i = 1; i<nbPoints;i++){
+				setArete(points.get(ordrePoints.get(i-1)),points.get(ordrePoints.get(i)));
+			}
+			
+			setArete(points.get(ordrePoints.get(0)),points.get(ordrePoints.size()-1));
+			repaint();
 		}
-		
-		for(int i = 0; i<nbPoints;i++){
-			setArete(points.get(ordrePoints.get(i)),points.get(ordrePoints.get(i+1)));
-		}
-		
-		setArete(points.get(ordrePoints.get(0)),points.get(ordrePoints.size()-1));
-		repaint();
 	}
 }
