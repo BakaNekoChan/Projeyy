@@ -8,10 +8,10 @@ import javax.swing.JPanel;
 
 public class Fenetre extends JFrame {
 //taille de la fenetre
-	int tailleX = 400;
-	int tailleY = 500;	
+	int tailleX = 1000;
+	int tailleY = 1000;	
 
-// déclaration des différents JPanel
+// dï¿½claration des diffï¿½rents JPanel
 
 	private PanChemin generalPan = new PanChemin();
 	
