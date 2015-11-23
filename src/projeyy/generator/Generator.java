@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
 
+import projeyy.projeyyInterface.Point;
+
 public class Generator {
 
 	private static int sizePlan = 100;
@@ -17,6 +19,23 @@ public class Generator {
 
 	//Cette méthode est celle utilisé pour générer la matrice. Elle retourne une matrice complète pour ne pas avoir à se soucier de que côté de la matrice est remplie.
 	//Pour l'utilister, il suffit de donner le nombre de points que l'on veut traiter, et le générateur renvoie une matrice carrée de taille nbPoints avec la distance entre chaque points.
+	public static double[][] generateMatrice (ArrayList<Point> mesPoints){
+		double [][] resultat = new double[mesPoints.size()][mesPoints.size()];
+		
+		for(int i = 0; i<mesPoints.size();i++){
+			for(int j = 0; j<mesPoints.size(); i++){
+				if(i == j){
+					resultat[i][j] = -1;
+				}
+				else{
+					resultat [i][j] = Math.sqrt(Math.pow(mesPoints.get(i).getX()-mesPoints.get(j).getX(), 2) + Math.pow(mesPoints.get(i).getY()-mesPoints.get(j).getY(), 2));
+				}
+			}
+		}
+		
+		return resultat;
+	}
+	
 	public static double[][] generateMatrice (int nbPoints){
 		int[][] plan;
 		plan = generatePlane(nbPoints, Generator.sizePlan);
@@ -40,6 +59,15 @@ public class Generator {
 		return resultat;
 	}
 
+	public static ArrayList<Point> generatePlane(int nbPoints){
+		ArrayList<Point> mesPoints = new ArrayList<Point>();
+		for (int i = 0; i < nbPoints; i++){
+			Point pointActuel = new Point((int)(Math.random()*sizePlan), (int)(Math.random()*sizePlan));
+			mesPoints.add(pointActuel);
+		}
+		return mesPoints;
+	}
+	
 	private static int[][] generatePlane (int nbPoints, int sizePlan){
 		int[][] points = new int[nbPoints][2];
 		for (int i = 0; i < nbPoints; i++){

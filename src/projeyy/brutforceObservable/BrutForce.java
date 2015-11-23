@@ -8,11 +8,15 @@ import java.io.PrintWriter;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.util.ArrayList;
-import projeyy.generator.*;
+import java.util.Observable;
 
-public class BrutForce {
+import projeyy.generator.*;
+import projeyy.projeyyInterface.Point;
+
+public class BrutForce extends Observable {
 	private int nbVilles;
 	private  int nombreExec;
+	private ArrayList<Point> mesPoints;
 	private  ArrayList<ArrayList<Integer>> listeCheminsOptimums;
 	private  double distanceOptimum;
 	private  double[][] maMatrice;
@@ -32,14 +36,15 @@ public class BrutForce {
 		this.distanceOptimum = 0;
 		this.listeCheminsOptimums = new ArrayList<ArrayList<Integer>>();
 		nombreExec = 0;
+		this.mesPoints = new ArrayList<Point>();
 	}
 	
 	public  void execute() {
 		nombreExec = 0;
 		memoryBean = ManagementFactory.getMemoryMXBean();
 		pw = createPrintWriter();
-		
-		maMatrice = Generator.generateMatrice(nbVilles);
+		mesPoints = Generator.generatePlane(nbVilles);
+		maMatrice = Generator.generateMatrice(mesPoints);
 		generateTree();
 		pw.close();
 	}
@@ -65,6 +70,13 @@ public class BrutForce {
 				listeCheminsOptimums.clear();
 				listeCheminsOptimums.add(new ArrayList<Integer>(cheminActuel));
 				distanceOptimum = calculerDistance(cheminActuel);
+				notifierObservateurs();
+				
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 			else if(calculerDistance(cheminActuel) == distanceOptimum){
 				listeCheminsOptimums.add(new ArrayList<Integer>(cheminActuel));
@@ -91,6 +103,12 @@ public class BrutForce {
 		return distance;
 	}
 	
+	public void notifierObservateurs()
+    {
+            setChanged();
+            notifyObservers();
+    }
+	
 	private  PrintWriter createPrintWriter(){
 		PrintWriter pw = null;
 		try{
@@ -101,5 +119,13 @@ public class BrutForce {
 			System.exit(0);
 		}
 		return pw;
+	}
+	
+	public ArrayList<Point> getPoints(){
+		return mesPoints;
+	}
+	
+	public ArrayList<Integer> getPlusCourtChemin(){
+		return listeCheminsOptimums.get(0);
 	}
 }
