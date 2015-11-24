@@ -1,14 +1,15 @@
 package projey.mst;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeSet;
 
 
 public class ArbreTrie {
 
+		
 	
-	
-	//rempli ts en triant les arêtes par distance
+	//rempli ts en triant les arï¿½tes par distance
 	public static void listeAretes(double [][] m, TreeSet<CoupleDis> ts){
 		for (int i=0; i<m.length; i++){
 			for(int j=0; j<i; j++){
@@ -17,27 +18,45 @@ public class ArbreTrie {
 		}
 	}
 	
-	//retourne une liste d'arêtes correspondant au circuit le plus court
-	public static ArrayList<CoupleDis> minCircuit(TreeSet<CoupleDis> ts){
+	//retourne une liste d'arï¿½tes correspondant au circuit le plus court
+	public static List<CoupleDis> minCircuit(TreeSet<CoupleDis> ts){
 		ArrayList<CoupleDis> aretes = new ArrayList<CoupleDis>();
-		ArrayList<Integer> classeConnec = new ArrayList<Integer>();
+		ArrayList<Integer> sousTree = new ArrayList<Integer>();
 		aretes.add(ts.first());
-		classeConnec.add(ts.first().getI());
-		classeConnec.add(ts.first().getJ());		
+		sousTree.add(ts.first().getI());
+		sousTree.add(ts.first().getJ());		
 		for (CoupleDis cur : ts){
-			if ( (classeConnec.contains(cur.getI()) && !classeConnec.contains(cur.getJ())) ){
+			if ( (sousTree.contains(cur.getI()) && !sousTree.contains(cur.getJ())) ){
 				aretes.add(cur);
-				classeConnec.add(cur.getJ());
+				sousTree.add(cur.getJ());
 				cur=ts.first();
 			}
-			if ( (!classeConnec.contains(cur.getI()) && classeConnec.contains(cur.getJ())) ) {
+			if ( (!sousTree.contains(cur.getI()) && sousTree.contains(cur.getJ())) ) {
 				aretes.add(cur);
-				classeConnec.add(cur.getI());
+				sousTree.add(cur.getI());
 				cur=ts.first();
 			}
-			
 		}		
 		return aretes;
 	}
 	
 }
+
+/*set<Integer>[] connexClass = new set<Integer>[n]
+ * for (i) {
+ * connexClasse[i] = new HashSet;
+ * connexClasse.add(i);
+ */
+// ajout arÃªte (i,j)
+/*
+ * connexClasse[i].addAll(connexClasse[j])
+ *for (int j2 : connexClasse[j])
+ *connexClasse[j2]=connexClasse[i];
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */

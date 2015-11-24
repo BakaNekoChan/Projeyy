@@ -27,7 +27,7 @@ public class CoupleDis extends Couple implements Comparable<CoupleDis> {
 				return getI()-cd2.getI();
 		}
 		else 
-			return (int) (val-cd2.val);
+			return (int) ((val-cd2.val)*1000);
 	}
 	
 	public String toString(){

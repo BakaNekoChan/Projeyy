@@ -1,6 +1,7 @@
 package projey.mst;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeSet;
 
 import projeyy.generator.Generator;
@@ -12,9 +13,9 @@ public class Main {
 		Generator.printMatrice(matrice);
 		TreeSet<CoupleDis> ts = new TreeSet<CoupleDis>();
 		ArbreTrie.listeAretes(matrice, ts);
-		ArrayList<CoupleDis> aretes = new ArrayList<CoupleDis>();
+		List<CoupleDis> aretes = new ArrayList<CoupleDis>();
 		aretes=ArbreTrie.minCircuit(ts);
-		System.out.println("Pour parcourir une distance minimale, il faut parcourir les arêtes suivante:"+aretes);
+		System.out.println("Pour parcourir une distance minimale, il faut parcourir les arï¿½tes suivante:"+aretes);
 
 	}
 
