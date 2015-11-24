@@ -2,18 +2,18 @@ package projey.mst;
 
 public class CoupleDis extends Couple implements Comparable<CoupleDis> {
 	
-	private final int val;
+	private final double val;
 
 	public CoupleDis(){
 		super(-1,-1);
 		val=-1;
 	}
-	public CoupleDis(int ii, int jj, int valu){
+	public CoupleDis(int ii, int jj, double m){
 		super(ii,jj);
-		val=valu;
+		val=m;
 	}
 
-	public int getVal(){
+	public double getVal(){
 		return val;
 	}
 
@@ -27,9 +27,12 @@ public class CoupleDis extends Couple implements Comparable<CoupleDis> {
 				return getI()-cd2.getI();
 		}
 		else 
-			return val-cd2.val;
+			return (int) (val-cd2.val);
 	}
 	
+	public String toString(){
+		return "["+getI()+", "+getJ()+"] -> "+val;
+	}
 	
 
 }

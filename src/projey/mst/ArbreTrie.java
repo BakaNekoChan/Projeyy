@@ -6,11 +6,10 @@ import java.util.TreeSet;
 
 public class ArbreTrie {
 
-	private TreeSet<CoupleDis> ts = new TreeSet<CoupleDis>();
 	
 	
 	//rempli ts en triant les arêtes par distance
-	public void listeAretes(int [][] m){
+	public static void listeAretes(double [][] m, TreeSet<CoupleDis> ts){
 		for (int i=0; i<m.length; i++){
 			for(int j=0; j<i; j++){
 				ts.add(new CoupleDis(i, j, m[i][j]));
@@ -19,7 +18,7 @@ public class ArbreTrie {
 	}
 	
 	//retourne une liste d'arêtes correspondant au circuit le plus court
-	public ArrayList<CoupleDis> minCircuit(){
+	public static ArrayList<CoupleDis> minCircuit(TreeSet<CoupleDis> ts){
 		ArrayList<CoupleDis> aretes = new ArrayList<CoupleDis>();
 		ArrayList<Integer> classeConnec = new ArrayList<Integer>();
 		aretes.add(ts.first());
