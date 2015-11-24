@@ -5,6 +5,7 @@ import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import projeyy.brutforceObservable.BrutForce;
 import projeyy.generator.Generator;
 
 import java.awt.Graphics;
@@ -21,26 +22,22 @@ public class PanChemin extends JPanel implements Observer {
 	// mise en place de la matrice distance avec generator, matrice xy recupère l'emplacement des différents points.	
 		
 	public void paintComponent(Graphics g){                
+		g.clearRect(0, 0, getWidth(), getHeight() );
 		
-		
-		for(int i = 0; i < nbPoints; i++){
-			
+		for(int i = 0; i < points.size(); i++){
 			paintSommet(g,i);
-			
-			if( i < nbPoints - 1){
-				paintArette(g,i);
-			}
+			paintArette(g,i);
 		} 
 	  } 
 	
 	private void paintSommet(Graphics g, int i){
 		g.setColor(Color.RED);
-		g.fillOval(points.get(i).getX() - taille_point/2, points.get(i).getY() - taille_point/2, taille_point, taille_point);
+		g.fillOval(points.get(i).getX()*10 - taille_point/2, points.get(i).getY()*10 - taille_point/2, taille_point, taille_point);
 	}
 	
 	private void paintArette(Graphics g, int i){
 		g.setColor(Color.RED);
-		g.drawLine(aretes.get(i).getX(),aretes.get(i).getY(),aretes.get(i).getX2(),aretes.get(i).getY2());
+		g.drawLine(aretes.get(i).getX()*10,aretes.get(i).getY()*10,aretes.get(i).getX2()*10,aretes.get(i).getY2()*10);
 	}
 	
 	
@@ -65,20 +62,26 @@ public class PanChemin extends JPanel implements Observer {
 		aretes.add(new Arete(a.getX(),a.getY(),b.getX(),b.getY()));
 	}
 	
+	public void viderTout(){
+		points.clear();
+		aretes.clear();
+	}
+	
 	//méthode Observer 
 	
 	public void update(Observable o, Object arg){
-		if(o instanceof(brutForce)){
-			points = new ArrayList<Point>(o.getPoints()); // Retourne ArrayList<Point>
-			ArrayList<Integer> ordrePoints = new ArrayList<Integer>(o.getPlusCourtChemin());// Retourne ArrayList<Integer>
-			nbPoints = mesPoints.size();
+		viderTout();
+		if(o instanceof BrutForce){
+			points = new ArrayList<Point>(((BrutForce) o).getPoints()); // Retourne ArrayList<Point>
+			ArrayList<Integer> ordrePoints = new ArrayList<Integer>(((BrutForce) o).getPlusCourtChemin());// Retourne ArrayList<Integer>
+			nbPoints = points.size();
+			
+			for(int i = 1; i<ordrePoints.size();i++){
+				setArete(points.get(ordrePoints.get(i-1)), points.get(ordrePoints.get(i)));
+			}
+			
+			setArete(points.get(ordrePoints.get(ordrePoints.size()-1)), points.get(ordrePoints.get(0)));
+			repaint();
 		}
-		
-		for(int i = 0; i<nbPoints;i++){
-			setArete(points.get(ordrePoints.get(i)),points.get(ordrePoints.get(i+1)));
-		}
-		
-		setArete(points.get(ordrePoints.get(0)),points.get(ordrePoints.size()-1));
-		repaint();
 	}
 }

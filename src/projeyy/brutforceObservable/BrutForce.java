@@ -71,9 +71,9 @@ public class BrutForce extends Observable {
 				listeCheminsOptimums.add(new ArrayList<Integer>(cheminActuel));
 				distanceOptimum = calculerDistance(cheminActuel);
 				notifierObservateurs();
-				
+				System.out.println("Notification !");
 				try {
-					Thread.sleep(5000);
+					Thread.sleep(2000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

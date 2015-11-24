@@ -25,4 +25,8 @@ public class Fenetre extends JFrame {
 		this.setVisible(true);
   }
 	
+	public PanChemin getPan(){
+		return generalPan;
+	}
+	
 }
