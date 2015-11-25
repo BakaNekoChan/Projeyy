@@ -1,4 +1,4 @@
-package projey.mst;
+package projeyy.mst;
 
 
 public class Couple {

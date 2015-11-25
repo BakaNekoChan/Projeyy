@@ -1,4 +1,4 @@
-package projey.mst;
+package projeyy.mst;
 
 import java.util.ArrayList;
 import java.util.List;
