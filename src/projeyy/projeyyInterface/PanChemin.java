@@ -5,7 +5,7 @@ import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import projeyy.brutforceObservable.BrutForce;
+import projeyy.brutforceObservable.BrutForce3;
 import projeyy.generator.Generator;
 
 import java.awt.Graphics;
@@ -71,9 +71,9 @@ public class PanChemin extends JPanel implements Observer {
 	
 	public void update(Observable o, Object arg){
 		viderTout();
-		if(o instanceof BrutForce){
-			points = new ArrayList<Point>(((BrutForce) o).getPoints()); // Retourne ArrayList<Point>
-			ArrayList<Integer> ordrePoints = new ArrayList<Integer>(((BrutForce) o).getPlusCourtChemin());// Retourne ArrayList<Integer>
+		if(o instanceof BrutForce3){
+			points = new ArrayList<Point>(((BrutForce3) o).getPoints()); // Retourne ArrayList<Point>
+			ArrayList<Integer> ordrePoints = new ArrayList<Integer>(((BrutForce3) o).getPlusCourtChemin());// Retourne ArrayList<Integer>
 			nbPoints = points.size();
 			
 			for(int i = 1; i<ordrePoints.size();i++){

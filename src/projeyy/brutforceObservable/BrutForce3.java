@@ -13,7 +13,7 @@ import java.util.Observable;
 import projeyy.generator.*;
 import projeyy.projeyyInterface.Point;
 
-public class BrutForce extends Observable {
+public class BrutForce3 extends Observable {
 	private int nbVilles;
 	private  int nombreExec;
 	private ArrayList<Point> mesPoints;
@@ -24,14 +24,14 @@ public class BrutForce extends Observable {
 	private  PrintWriter pw;
 
 	public static void main(String[] args) {
-		BrutForce bruteForce = new BrutForce(7);
+		BrutForce3 bruteForce = new BrutForce3(7);
 		bruteForce.execute();
 		System.out.println(bruteForce.listeCheminsOptimums);
 		System.out.println(bruteForce.distanceOptimum);
 		System.out.println(bruteForce.nombreExec);		
 	}
 	
-	public BrutForce(int nbVilles){
+	public BrutForce3(int nbVilles){
 		this.nbVilles = nbVilles;
 		this.distanceOptimum = 0;
 		this.listeCheminsOptimums = new ArrayList<ArrayList<Integer>>();

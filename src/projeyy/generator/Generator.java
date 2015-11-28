@@ -16,7 +16,6 @@ public class Generator {
 
 	private static int sizePlan = 100;
 
-
 	//Cette méthode est celle utilisé pour générer la matrice. Elle retourne une matrice complète pour ne pas avoir à se soucier de que côté de la matrice est remplie.
 	//Pour l'utilister, il suffit de donner le nombre de points que l'on veut traiter, et le générateur renvoie une matrice carrée de taille nbPoints avec la distance entre chaque points.
 	public static double[][] generateMatrice (ArrayList<Point> mesPoints){
