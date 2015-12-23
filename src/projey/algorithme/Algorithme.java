@@ -8,6 +8,7 @@ import projeyy.projeyyInterface.Point;
 public abstract class Algorithme extends Observable{
 	public abstract ArrayList<Point> getPoints();
 	public abstract ArrayList<Integer> getPlusCourtChemin();
+	public abstract double getDistancePlusCourtChemin();
 	
 	public void notifierObservateurs()
     {

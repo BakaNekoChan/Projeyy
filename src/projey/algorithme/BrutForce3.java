@@ -128,4 +128,9 @@ public class BrutForce3 extends Algorithme {
 	public ArrayList<Integer> getPlusCourtChemin(){
 		return listeCheminsOptimums.get(0);
 	}
+
+	@Override
+	public double getDistancePlusCourtChemin() {
+		return calculerDistance(listeCheminsOptimums.get(0));
+	}
 }
