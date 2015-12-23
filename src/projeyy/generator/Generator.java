@@ -2,9 +2,13 @@ package projeyy.generator;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -30,10 +34,10 @@ public class Generator {
 				}
 			}
 		}
-		
+
 		return resultat;
 	}
-	
+
 	public static double[][] generateMatrice (int nbPoints){
 		int[][] plan;
 		plan = generatePlane(nbPoints, Generator.sizePlan);
@@ -65,7 +69,7 @@ public class Generator {
 		}
 		return mesPoints;
 	}
-	
+
 	private static int[][] generatePlane (int nbPoints, int sizePlan){
 		int[][] points = new int[nbPoints][2];
 		for (int i = 0; i < nbPoints; i++){
@@ -103,7 +107,7 @@ public class Generator {
 		pw.close();
 	}
 
-	
+
 	private static ArrayList<double[][]> useFile(String filePath){
 		ArrayList<double[][]> mesMatrices = new ArrayList<double[][]>();
 		File f = new File(filePath);
@@ -115,10 +119,10 @@ public class Generator {
 			e.printStackTrace();
 			System.out.println("Erreur lors de la récupération du fichier, la liste des matrices est vide.");
 		}
-		
+
 		int nbPoints = sc.nextInt();
 		int nbMatrices = sc.nextInt();
-		
+
 		for(int i = 0; i<nbMatrices; i++){
 			double[][] matriceTmp = new double[nbPoints][nbPoints];
 			for (int j = 0; j < nbPoints; j++) {
@@ -132,12 +136,49 @@ public class Generator {
 		return mesMatrices;
 	}
 
+	public static void generateFileSerialize(int nbPoints, int nbMatrices, String filePath){
+		ArrayList<double[][]> mesMatrices = new ArrayList<double[][]>();
+		for(int i = 0; i<nbMatrices; i++){
+			double[][] matrice = generateMatrice(nbPoints);
+			mesMatrices.add(matrice);
+		}
+		File fichier =  new File(filePath) ;
+		ObjectOutputStream oos;
+		try {
+			oos = new ObjectOutputStream(new FileOutputStream(fichier));
+			oos.writeObject(mesMatrices);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static ArrayList<double[][]> useFileSerialize(String filePath){
+		File fichier =  new File(filePath) ;
+		ObjectInputStream ois = null;
+		try {
+			ois = new ObjectInputStream(new FileInputStream(fichier));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			return (ArrayList<double[][]>) ois.readObject();
+		} catch (ClassNotFoundException e) {
+			return null;
+		} catch (IOException e) {
+			return null;
+		}
+	}
+
 	public static void main(String[] args) {
 		generateFile(12,100,"MonFichier");
 		ArrayList<double[][]> mesMatrices = useFile("MonFichier");
 		printMatrice(mesMatrices.get(0));
+		generateFileSerialize(5,100,"MonFichierSerialize");
+		mesMatrices = useFileSerialize("MonFichierSerialize");
+		System.out.println();
+		printMatrice(mesMatrices.get(0));
 	}
-	
+
 	public static void printMatrice(double[][] m){
 		for (int i = 0; i < m.length; i++) {
 			for (int j = 0; j < m.length; j++) {

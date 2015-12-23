@@ -7,54 +7,62 @@ import projeyy.generator.Generator;
 
 //Pour plus d'information sur les Individus et les moyens de sélection, voir cette page:
 //http://perso.ensta-paristech.fr/~lunevill/sim_numerique/projets/vdc.pdf
-public class Individu {
+
+public class Individu implements Comparable<Individu>{
 	private ArrayList<Integer> monChemin;
-	private double distanceTotale;
-	static double[][] matriceDistances;
+	private double[][] matriceDistances;
 	
-	public Individu(ArrayList<Integer> monChemin) {
+	public static void main(String[] args) {
+		System.out.println(new Individu(Generator.generateMatrice(5)));
+	}
+	
+	public Individu(ArrayList<Integer> monChemin, double[][] matriceDistances) {
 		this.monChemin = monChemin;
-		calculerDistance();
+		this.matriceDistances = matriceDistances;
 	}
 	
-	public static void setMatriceDistances(int nbPoints){
-		matriceDistances = Generator.generateMatrice(nbPoints);
+	public Individu(double [][] matriceDistances){
+		this.matriceDistances = matriceDistances;
+		this.monChemin = new ArrayList<Integer>();
+		randomChemin();
 	}
-	
-	public static void setMatriceDistances(double[][] matriceDistances){
-		Individu.matriceDistances = matriceDistances;
-	}
-	
-	public static double[][] getMatriceDistance(){
-		return Individu.matriceDistances;
-	}
-	
+
+	private void randomChemin() {
+			monChemin.clear();
+			ArrayList<Integer> villesRestantes = new ArrayList<Integer>();
+			for (int i = 0; i < matriceDistances.length; i++){
+				villesRestantes.add(i);
+			}
+			
+			for(int i = 0; i < matriceDistances.length; i++){
+				monChemin.add(villesRestantes.remove((int) (Math.random()*villesRestantes.size())));
+			}
+		}
+
 	public double getDistanceTotale() {
+		double distanceTotale = 0;
+		for(int i = 1; i < this.monChemin.size(); i++){
+			distanceTotale += matriceDistances[this.monChemin.get(i-1)][this.monChemin.get(i)];
+		}
+		distanceTotale += matriceDistances[this.monChemin.get(this.monChemin.size()-1)][this.monChemin.get(0)];
 		return distanceTotale;
 	}
 
 	public ArrayList<Integer> getMonChemin() {
 		return monChemin;
 	}
-	
-	public static ArrayList<Individu> selectionParRang(ArrayList<Individu> listeSelection){
-		ArrayList<Individu> listeSelectionnee = new ArrayList<Individu>(listeSelection);
-		
-		return listeSelectionnee;
+
+	public int compareTo(Individu i) {
+		int resultat = 0;
+		double distanceThis = getDistanceTotale();
+		double distanceI = i.getDistanceTotale();
+		if(distanceThis - distanceI <0 && distanceThis - distanceI  > -1) resultat = -1;
+		else if(distanceThis - distanceI  > 0 && distanceThis - distanceI  < 1) resultat = 1;
+		else resultat = (int)(distanceThis - distanceI);
+		return resultat;
 	}
 	
-	//Il y aura plusieurs genererPopulationSuivante en changeant l'algorithme pour tester différentes efficacités.
-	public static ArrayList<Individu> genererPopulationSuivante1(ArrayList<Individu> listeParents){
-		
-	}
-	
-	// Permet de mettre la bonne distance deans la variable Individu.distanceTotale
-	// Il faut avoir généré la matrice static de Individu pour pouvoir utiliser cette méthode. (Voir setMatriceDistance)
-	private void calculerDistance(){ 
-		this.distanceTotale = 0;
-		for(int i = 1; i < this.monChemin.size(); i++){
-			this.distanceTotale += matriceDistances[this.monChemin.get(i-1)][this.monChemin.get(i)];
-		}
-		this.distanceTotale += matriceDistances[this.monChemin.get(this.monChemin.size()-1)][this.monChemin.get(0)];
+	public String toString(){
+		return monChemin.toString();
 	}
 }

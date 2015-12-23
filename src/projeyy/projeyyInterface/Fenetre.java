@@ -25,18 +25,18 @@ public class Fenetre extends JFrame {
 	int tailleX = 1000;
 	int tailleY = 1000;	
 
-// déclaration des JPanel
+// dï¿½claration des JPanel
 	private PanChemin generalPan = new PanChemin();
 	private PanDistance bottomPan = new PanDistance();
 
-// déclaration des différents éléments du menu
+// dï¿½claration des diffï¿½rents ï¿½lï¿½ments du menu
 	private JMenuBar menuBar = new JMenuBar();
 	private ButtonGroup bg = new ButtonGroup();
 
 	
 	private JMenu fichier = new JMenu("Fichier");
-	private JMenu preference = new JMenu("Préférence");
-	private JMenu aPropos = new JMenu("à propos");
+	private JMenu preference = new JMenu("PrÃ©fÃ©rence");
+	private JMenu aPropos = new JMenu("Ã€ propos");
 	private JMenu choixAlgo = new JMenu("Choix de l'algorithme");
 	
 // item de Fichier
@@ -45,7 +45,7 @@ public class Fenetre extends JFrame {
 	private JMenuItem save = new JMenuItem("Sauvegarder une matrice");
 	private JMenuItem quitter = new JMenuItem("Quitter");
 	
-// item de Préférence
+// item de Prï¿½fï¿½rence
 	private JRadioButtonMenuItem brutforce = new JRadioButtonMenuItem("Brutforce");
 	private JRadioButtonMenuItem bruteforce2 = new JRadioButtonMenuItem("Bruteforce 2");
 	private JRadioButtonMenuItem bruteforce3 = new JRadioButtonMenuItem("Bruteforce 3");
@@ -53,7 +53,7 @@ public class Fenetre extends JFrame {
 	private JRadioButtonMenuItem genetique = new JRadioButtonMenuItem("Genetique");
 	private JMenuItem nbVille = new JMenuItem("Nombre de ville");
 	
-// item de à propos
+// item de ï¿½ propos
 	private JMenuItem apropos = new JMenuItem("?");
 	
 	
@@ -99,10 +99,10 @@ public class Fenetre extends JFrame {
 		apropos.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent arg0) {
 		        JOptionPane jop = new JOptionPane();        
-		        String mess = "Bienvenu ! \n Voici l'application du problème du voyageur de commerce (TSP) !\n";
-		        mess += "Créé par des étudiants dans le cadre d'un projet tutoré \n";
+		        String mess = "Bienvenu ! \n Voici l'application du problÃ¨me du voyageur de commerce (TSP) !\n";
+		        mess += "CrÃ©Ã© par des Ã©tudiants dans le cadre d'un projet tutorÃ© \n";
 		        mess += "\n Enjoy !";        
-		        jop.showMessageDialog(null, mess, "À propos", JOptionPane.INFORMATION_MESSAGE);        
+		        jop.showMessageDialog(null, mess, "Ã€ propos", JOptionPane.INFORMATION_MESSAGE);        
 		      }            
 		    });
 		aPropos.add(apropos);
