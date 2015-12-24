@@ -13,7 +13,9 @@ public class Individu implements Comparable<Individu>{
 	private double[][] matriceDistances;
 	
 	public static void main(String[] args) {
-		System.out.println(new Individu(Generator.generateMatrice(5)));
+		Individu i = new Individu(Generator.generateMatrice(5));
+		System.out.println(i);
+		System.out.println(i.genererEnfant());
 	}
 	
 	public Individu(ArrayList<Integer> monChemin, double[][] matriceDistances) {
@@ -64,5 +66,26 @@ public class Individu implements Comparable<Individu>{
 	
 	public String toString(){
 		return monChemin.toString();
+	}
+	
+	public Individu genererEnfant(){
+		ArrayList<Integer> cheminRepare = new ArrayList<Integer>(monChemin);
+		if(monChemin.size() > 3){
+				//Selection de la première arrête.
+				int point1 = (int)(Math.random() * (double)monChemin.size());
+				int point2 = (point1 != monChemin.size()-1)? point1+1 : 0;
+
+				//Selection de la seconde arrête.
+				int point3 = (int)(point2 + (double)(1 + Math.random() * (monChemin.size() - 3))) % monChemin.size();
+				int point4 = point3+1;
+
+				int echange = 0;
+				int max1 = Math.max(point1, point2);
+				int min2 = Math.min(point3, point4);
+				echange = cheminRepare.get(max1);
+				cheminRepare.set(max1, cheminRepare.get(min2));
+				cheminRepare.set(min2, echange);
+		}
+		return new Individu(cheminRepare, matriceDistances);
 	}
 }
