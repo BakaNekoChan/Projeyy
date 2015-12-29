@@ -3,6 +3,7 @@ package projeyy.projeyyInterface;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,7 +38,7 @@ public class Fenetre extends JFrame implements Observer {
 	private PanChemin centerPan = new PanChemin();
 	private PanDistance bottomPan = new PanDistance();
 // déclaration JLabel
-	private JLabel northLabel = new JLabel();
+	private JLabel northLabel = new JLabel("Bienvenu sur le TSP !");
 	private Font courier = new Font("Courier",Font.BOLD,14);
 	
 // dï¿½claration des diffï¿½rents ï¿½lï¿½ments du menu
@@ -74,17 +75,24 @@ public class Fenetre extends JFrame implements Observer {
 		this.setSize(tailleX, tailleY);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
-		this.setLayout(new BorderLayout());
+		this.setLayout(new BorderLayout(0,0));
 		
 		northLabel.setFont(courier);  
 	    northLabel.setForeground(Color.black);  
 	    northLabel.setHorizontalAlignment(JLabel.CENTER);
 	    
-		//generalPan.add(northLabel, BorderLayout.NORTH);
-		//generalPan.add(centerPan, BorderLayout.CENTER);
-		//generalPan.add(bottomPan, BorderLayout.SOUTH);
+	    northLabel.setMinimumSize(new Dimension(tailleX,50));
+	    northLabel.setPreferredSize(new Dimension(tailleX,50));
+	    centerPan.setMinimumSize(new Dimension(tailleX-50,tailleY-425));
+	    centerPan.setPreferredSize(new Dimension(tailleX-50,tailleY-425));
+	    bottomPan.setMinimumSize(new Dimension(tailleX,100));
+	    bottomPan.setPreferredSize(new Dimension(tailleX,100));
+	    
+		generalPan.add(northLabel, BorderLayout.NORTH);
+		generalPan.add(centerPan);
+		generalPan.add(bottomPan, BorderLayout.SOUTH);
 		this.initMenu();
-		this.setContentPane(centerPan);
+		this.setContentPane(generalPan);
 		this.setVisible(true);
   }
 	
@@ -199,10 +207,10 @@ public class Fenetre extends JFrame implements Observer {
 			repaint();
 		}
 	 
-	public int getTailleX(){
-		return tailleX;
+	public void setTailleX(int x){
+		tailleX = x;
 	}
-	public int getTailleY(){
-		return tailleY;
+	public void setTailleY(int y){
+		tailleY = y;
 	}
 }

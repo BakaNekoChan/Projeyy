@@ -30,8 +30,8 @@ public class PanDistance extends JPanel {
 	
 	public void paintComponent(Graphics g){                
 		g.clearRect(0, 0, getWidth(), getHeight() );
-		g.drawString("La distance totale est de :"+Double.toString(this.distance),0,0); 
-		g.drawString("La distance précédente était de :"+Double.toString(this.distanceP), 0, 15);
+		g.drawString("La distance totale est de :"+Double.toString(this.distance),30,15); 
+		g.drawString("La distance précédente était de :"+Double.toString(this.distanceP), 30, 30);
 	 } 
 
 }
