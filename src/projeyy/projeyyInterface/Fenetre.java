@@ -6,6 +6,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -15,28 +19,35 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
+
+import projey.algorithme.BrutForce3;
+
 import javax.swing.JCheckBox;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 
-public class Fenetre extends JFrame {
+public class Fenetre extends JFrame implements Observer {
 //taille de la fenetre
 	int tailleX = 1000;
 	int tailleY = 1000;	
 
 // dï¿½claration des JPanel
-	private PanChemin generalPan = new PanChemin();
+	private JPanel generalPan = new JPanel();
+	private PanChemin centerPan = new PanChemin();
 	private PanDistance bottomPan = new PanDistance();
-
+// déclaration JLabel
+	private JLabel northLabel = new JLabel();
+	private Font courier = new Font("Courier",Font.BOLD,14);
+	
 // dï¿½claration des diffï¿½rents ï¿½lï¿½ments du menu
 	private JMenuBar menuBar = new JMenuBar();
 	private ButtonGroup bg = new ButtonGroup();
 
 	
 	private JMenu fichier = new JMenu("Fichier");
-	private JMenu preference = new JMenu("PrÃ©fÃ©rence");
-	private JMenu aPropos = new JMenu("Ã€ propos");
+	private JMenu preference = new JMenu("Préférence");
+	private JMenu aPropos = new JMenu("à propos");
 	private JMenu choixAlgo = new JMenu("Choix de l'algorithme");
 	
 // item de Fichier
@@ -47,8 +58,8 @@ public class Fenetre extends JFrame {
 	
 // item de Prï¿½fï¿½rence
 	private JRadioButtonMenuItem brutforce = new JRadioButtonMenuItem("Brutforce");
-	private JRadioButtonMenuItem bruteforce2 = new JRadioButtonMenuItem("Bruteforce 2");
-	private JRadioButtonMenuItem bruteforce3 = new JRadioButtonMenuItem("Bruteforce 3");
+	private JRadioButtonMenuItem brutforce2 = new JRadioButtonMenuItem("Brutforce 2");
+	private JRadioButtonMenuItem brutforce3 = new JRadioButtonMenuItem("Brutforce 3");
 	private JRadioButtonMenuItem mst = new JRadioButtonMenuItem("MST");
 	private JRadioButtonMenuItem genetique = new JRadioButtonMenuItem("Genetique");
 	private JMenuItem nbVille = new JMenuItem("Nombre de ville");
@@ -59,16 +70,24 @@ public class Fenetre extends JFrame {
 	
 	
 	public Fenetre(){
-		this.setTitle("Test interface");
+		this.setTitle("TSP");
 		this.setSize(tailleX, tailleY);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
 		this.setLayout(new BorderLayout());
-		this.getContentPane().add(generalPan, BorderLayout.CENTER);
-		this.getContentPane().add(bottomPan, BorderLayout.EAST);
+		
+		northLabel.setFont(courier);  
+	    northLabel.setForeground(Color.black);  
+	    northLabel.setHorizontalAlignment(JLabel.CENTER);
+	    
+		generalPan.add(northLabel, BorderLayout.NORTH);
+		generalPan.add(centerPan, BorderLayout.CENTER);
+		generalPan.add(bottomPan, BorderLayout.SOUTH);
 		this.initMenu();
+		this.setContentPane(generalPan);
 		this.setVisible(true);
   }
+	
 	public void initMenu(){
 	// menu fichier
 		fichier.add(lancer);
@@ -79,19 +98,26 @@ public class Fenetre extends JFrame {
 		quitter.addActionListener(new ActionListener(){ public void actionPerformed(ActionEvent event){System.exit(0);}});
 		fichier.add(quitter);
 	// menu preference
+		brutforce.addActionListener(new BrutForceListener());
+		brutforce2.addActionListener(new BrutForce2Listener());
+		brutforce3.addActionListener(new BrutForce3Listener());
+		mst.addActionListener(new MstListener());
+		genetique.addActionListener(new GenetiqueListener());
+		
 		bg.add(brutforce);
-		bg.add(bruteforce2);
-		bg.add(bruteforce3);
+		bg.add(brutforce2);
+		bg.add(brutforce3);
 		bg.add(mst);
 		bg.add(genetique);
 		
+		
 		choixAlgo.add(brutforce);
-		choixAlgo.add(bruteforce2);
-		choixAlgo.add(bruteforce3);
+		choixAlgo.add(brutforce2);
+		choixAlgo.add(brutforce3);
 		choixAlgo.add(mst);
 		choixAlgo.add(genetique);
 		
-		bruteforce3.setSelected(true);
+		brutforce3.setSelected(true);
 		
 		preference.add(choixAlgo);
 		preference.add(nbVille);
@@ -99,10 +125,10 @@ public class Fenetre extends JFrame {
 		apropos.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent arg0) {
 		        JOptionPane jop = new JOptionPane();        
-		        String mess = "Bienvenu ! \n Voici l'application du problÃ¨me du voyageur de commerce (TSP) !\n";
-		        mess += "CrÃ©Ã© par des Ã©tudiants dans le cadre d'un projet tutorÃ© \n";
+		        String mess = "Bienvenu ! \n Voici l'application du problème du voyageur de commerce (TSP) !\n";
+		        mess += "Créé par des étudiants dans le cadre d'un projet tutoré \n";
 		        mess += "\n Enjoy !";        
-		        jop.showMessageDialog(null, mess, "Ã€ propos", JOptionPane.INFORMATION_MESSAGE);        
+		        jop.showMessageDialog(null, mess, "à propos", JOptionPane.INFORMATION_MESSAGE);        
 		      }            
 		    });
 		aPropos.add(apropos);
@@ -117,7 +143,60 @@ public class Fenetre extends JFrame {
 	
 	//getter 
 	public PanChemin getPan(){
-		return generalPan;
+		return centerPan;
 	}
+	
+	//class interne
+	 class BrutForceListener implements ActionListener{
+		    //Redéfinition de la méthode actionPerformed()
+		    public void actionPerformed(ActionEvent arg0) {
+		      northLabel.setText("L'algorithme actuellement exécuté est : BruteForce");        
+		    }
+	}
+	 
+	 class BrutForce2Listener implements ActionListener{
+		    //Redéfinition de la méthode actionPerformed()
+		    public void actionPerformed(ActionEvent arg0) {
+		      northLabel.setText("L'algorithme actuellement exécuté est : BruteForce 2");        
+		    }
+	 }
+	 
+	 class BrutForce3Listener implements ActionListener{
+		    //Redéfinition de la méthode actionPerformed()
+		    public void actionPerformed(ActionEvent arg0) {
+		      northLabel.setText("L'algorithme actuellement exécuté est : BruteForce 3");        
+		    }
+	 }
+	 
+	 class MstListener implements ActionListener{
+		    //Redéfinition de la méthode actionPerformed()
+		    public void actionPerformed(ActionEvent arg0) {
+		      northLabel.setText("L'algorithme actuellement exécuté est : MST");        
+		    }
+	 }
+	 
+	 class GenetiqueListener implements ActionListener{
+		    //Redéfinition de la méthode actionPerformed()
+		    public void actionPerformed(ActionEvent arg0) {
+		      northLabel.setText("L'algorithme actuellement exécuté est : Genetique");        
+		    }
+	 }
+	 
+	 //methode observer
+	 public void update(Observable o, Object arg){
+
+			bottomPan.setDistanceP(bottomPan.getDistance());
+			bottomPan.setDistance(((BrutForce3) o).getDistancePlusCourtChemin());
+			centerPan.viderTout();
+			centerPan.setArrayPoint(new ArrayList<Point>(((BrutForce3)o).getPoints()));
+			ArrayList<Integer> ordrePoints = new ArrayList<Integer>(((BrutForce3) o).getPlusCourtChemin());
+			
+			for(int i = 0; i< ordrePoints.size();i++){
+				centerPan.setArete(centerPan.getPoints().get(ordrePoints.get(i-1)), centerPan.getPoints().get(ordrePoints.get(i)));
+			}
+			
+			centerPan.setArete(centerPan.getPoints().get(ordrePoints.get(ordrePoints.size()-1)), centerPan.getPoints().get(ordrePoints.get(0)));
+			repaint();
+		}
 	
 }

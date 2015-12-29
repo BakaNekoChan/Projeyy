@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-public class PanChemin extends JPanel implements Observer {
+public class PanChemin extends JPanel {
 
 	private ArrayList<Point> points = new ArrayList<Point>();
 	private ArrayList<Arete> aretes = new ArrayList<Arete>();
@@ -57,6 +57,9 @@ public class PanChemin extends JPanel implements Observer {
 	public void setPoint(int x, int y){
 		points.add(new Point(x,y));
 	}
+	public void setArrayPoint(ArrayList<Point> pts){
+		points = pts;
+	}
 	// ajout d'une arete à partir de deux points
 	public void setArete(Point a,Point b){
 		aretes.add(new Arete(a.getX(),a.getY(),b.getX(),b.getY()));
@@ -67,21 +70,8 @@ public class PanChemin extends JPanel implements Observer {
 		aretes.clear();
 	}
 	
-	//méthode Observer 
-	
-	public void update(Observable o, Object arg){
-		viderTout();
-		if(o instanceof BrutForce3){
-			points = new ArrayList<Point>(((BrutForce3) o).getPoints()); // Retourne ArrayList<Point>
-			ArrayList<Integer> ordrePoints = new ArrayList<Integer>(((BrutForce3) o).getPlusCourtChemin());// Retourne ArrayList<Integer>
-			nbPoints = points.size();
-			
-			for(int i = 1; i<ordrePoints.size();i++){
-				setArete(points.get(ordrePoints.get(i-1)), points.get(ordrePoints.get(i)));
-			}
-			
-			setArete(points.get(ordrePoints.get(ordrePoints.size()-1)), points.get(ordrePoints.get(0)));
-			repaint();
-		}
+	//getter
+	public ArrayList<Point> getPoints(){
+		return points;
 	}
 }

@@ -13,27 +13,25 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-public class PanDistance extends JPanel implements Observer {
+public class PanDistance extends JPanel {
 
-	private String distance;
-	private String distanceP;
+	private double distance;
+	private double distanceP;
 	
+	public double getDistance(){
+		return distance;
+	}
+	public void setDistance(double d){
+		this.distance = d;
+	}
+	public void setDistanceP(double dp){
+		this.distanceP = dp;
+	}
 	
 	public void paintComponent(Graphics g){                
 		g.clearRect(0, 0, getWidth(), getHeight() );
-		g.drawString("La distance totale est de :"+this.distance,0,0); 
-		g.drawString("La distance précédente était de :"+this.distanceP, 0, 15);
+		g.drawString("La distance totale est de :"+Double.toString(this.distance),0,0); 
+		g.drawString("La distance précédente était de :"+Double.toString(this.distanceP), 0, 15);
 	 } 
-	
-	
-	public void update(Observable o, Object arg){
 
-		if(o instanceof BrutForce3){
-			distanceP = distance;
-			distance = Integer.toString(((BrutForce3) o).getDistance());	
-		}
-		repaint();
-	}
-	
-	
 }
