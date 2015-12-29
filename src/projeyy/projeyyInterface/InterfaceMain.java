@@ -1,6 +1,6 @@
 package projeyy.projeyyInterface;
 
-import projeyy.brutforceObservable.BrutForce3;
+import projey.algorithme.BrutForce3;
 
 public class InterfaceMain {
 

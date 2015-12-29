@@ -19,6 +19,7 @@ public class PanChemin extends JPanel {
 	private ArrayList<Arete> aretes = new ArrayList<Arete>();
 	private static final int taille_point = 25;
 	private int nbPoints;
+
 	// mise en place de la matrice distance avec generator, matrice xy recupère l'emplacement des différents points.	
 		
 	public void paintComponent(Graphics g){                
@@ -32,15 +33,22 @@ public class PanChemin extends JPanel {
 	
 	private void paintSommet(Graphics g, int i){
 		g.setColor(Color.RED);
-		g.fillOval(points.get(i).getX()*10 - taille_point/2, points.get(i).getY()*10 - taille_point/2, taille_point, taille_point);
+		g.fillOval(points.get(i).getX()*getMultiplicateur() - taille_point/2, points.get(i).getY()*getMultiplicateur() - taille_point/2, taille_point, taille_point);
 	}
 	
 	private void paintArette(Graphics g, int i){
+		System.out.println(getSize().getWidth()+" "+ getSize().getHeight());
+		System.out.println(points.get(i).getX()*getMultiplicateur()+" "+ points.get(i).getY()*getMultiplicateur());
+		System.out.println("==============================");
+		
 		g.setColor(Color.RED);
-		g.drawLine(aretes.get(i).getX()*10,aretes.get(i).getY()*10,aretes.get(i).getX2()*10,aretes.get(i).getY2()*10);
+		g.drawLine(aretes.get(i).getX()*getMultiplicateur(),aretes.get(i).getY()*getMultiplicateur(),aretes.get(i).getX2()*getMultiplicateur(),aretes.get(i).getY2()*getMultiplicateur());
 	}
 	
-	
+	private int getMultiplicateur(){
+		return (int) (Math.min(getSize().getWidth(),getSize().getHeight())/100);
+		
+	}
 	
 	//méthode pour ArrayList
 	// rempli les ArrayList
@@ -52,6 +60,8 @@ public class PanChemin extends JPanel {
 			setArete(points.get(i),points.get(i+1));
 		}
 	}
+	
+	
 	
 	// ajout d'un point
 	public void setPoint(int x, int y){

@@ -80,11 +80,11 @@ public class Fenetre extends JFrame implements Observer {
 	    northLabel.setForeground(Color.black);  
 	    northLabel.setHorizontalAlignment(JLabel.CENTER);
 	    
-		generalPan.add(northLabel, BorderLayout.NORTH);
-		generalPan.add(centerPan, BorderLayout.CENTER);
-		generalPan.add(bottomPan, BorderLayout.SOUTH);
+		//generalPan.add(northLabel, BorderLayout.NORTH);
+		//generalPan.add(centerPan, BorderLayout.CENTER);
+		//generalPan.add(bottomPan, BorderLayout.SOUTH);
 		this.initMenu();
-		this.setContentPane(generalPan);
+		this.setContentPane(centerPan);
 		this.setVisible(true);
   }
 	
@@ -191,12 +191,18 @@ public class Fenetre extends JFrame implements Observer {
 			centerPan.setArrayPoint(new ArrayList<Point>(((BrutForce3)o).getPoints()));
 			ArrayList<Integer> ordrePoints = new ArrayList<Integer>(((BrutForce3) o).getPlusCourtChemin());
 			
-			for(int i = 0; i< ordrePoints.size();i++){
+			for(int i = 1; i< ordrePoints.size();i++){
 				centerPan.setArete(centerPan.getPoints().get(ordrePoints.get(i-1)), centerPan.getPoints().get(ordrePoints.get(i)));
 			}
 			
 			centerPan.setArete(centerPan.getPoints().get(ordrePoints.get(ordrePoints.size()-1)), centerPan.getPoints().get(ordrePoints.get(0)));
 			repaint();
 		}
-	
+	 
+	public int getTailleX(){
+		return tailleX;
+	}
+	public int getTailleY(){
+		return tailleY;
+	}
 }
