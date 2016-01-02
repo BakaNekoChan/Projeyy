@@ -72,7 +72,7 @@ public class Fenetre extends JFrame implements Observer {
 	private JMenuItem apropos = new JMenuItem("?");
 	protected Algorithme monAlgoBrutForce3 = new BrutForce3(nbrVille);
 	protected Algorithme monAlgoBacktrack = new BackTrack(nbrVille);
-	protected Algorithme monAlgoGenetique = new Genetique(nbrVille);
+	protected Algorithme monAlgoGenetique = new Genetique(nbrVille, 10, 10);
 
 	
 	
