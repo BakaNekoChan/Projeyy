@@ -159,6 +159,7 @@ public class Fenetre extends JFrame implements Observer {
 		        JOptionPane jop = new JOptionPane();        
 		        String mess = "Bienvenu ! \n Voici l'application du problème du voyageur de commerce (TSP) !\n";
 		        mess += "Créé par des étudiants dans le cadre d'un projet tutoré \n";
+		        mess += "\n Loïc Wisnieswki, Anthony Chaillot, Romain Hagemann et Borrossi Lucie. \n";
 		        mess += "\n Enjoy !";        
 		        JOptionPane.showMessageDialog(null, mess, "à propos", JOptionPane.INFORMATION_MESSAGE);        
 		      }            
