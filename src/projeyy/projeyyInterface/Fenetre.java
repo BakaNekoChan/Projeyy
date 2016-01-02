@@ -205,7 +205,7 @@ public class Fenetre extends JFrame implements Observer {
 			
 			centerPan.setArete(centerPan.getPoints().get(ordrePoints.get(ordrePoints.size()-1)), centerPan.getPoints().get(ordrePoints.get(0)));
 			repaint();
-		}
+	}
 	 
 	public void setTailleX(int x){
 		tailleX = x;
