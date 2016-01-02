@@ -13,11 +13,18 @@ public class Population {
 	private ArrayList<Point> villes;
 	
 	public static void main(String[] args) {
-		Population p = new Population(Generator.generatePlane(10), 50);
+		Population p = new Population(Generator.generatePlane(10), 500);
+		Generator.printMatrice(p.matriceDistance);
+		for(int i = 0; i < 10; i++){
+			System.out.println(p.getBestIndividu());
+			System.out.println(p.getBestIndividu().getDistanceTotale());
+			p.genererPopulationSuivante1();
+		}
 	}
 	
 	public Population(ArrayList<Point> villes, int nbIndividuBase){
 		this.villes = villes;
+		this.maPop = new MyArrayList<Individu>();
 		matriceDistance = Generator.generateMatrice(villes);
 		genererPopulationBase(nbIndividuBase);
 	}
@@ -46,16 +53,23 @@ public class Population {
 	public void reproductionLocal(){
 		MyArrayList<Individu> newPop = new MyArrayList<Individu>(maPop);
 		for(Individu i : maPop){
-			newPop.add(i);
 			newPop.add(i.genererEnfant());
 		}
+		maPop = newPop;
+	}
+	
+	public Individu getBestIndividu(){
+		return this.maPop.get(0);
 	}
 	
 	public String toString(){
 		String maChaine = "";
-		for(Individu i:maPop){
-			maChaine += i.toString() + "\n";
-		}
+		int j = maPop.size();
+//		for(Individu i:maPop){
+//			maChaine += i.toString() + "\n";
+//			j++;
+//		}
+		maChaine += "Il y a exactement " + j + " individus.";
 		return maChaine;
 	}
 }

@@ -62,8 +62,9 @@ public class BrutForce3 extends Algorithme {
 	private  void generateTree (ArrayList<Integer> listeVilles,ArrayList<Integer> cheminActuel){
 		int villeRetenue = 0; 
 		
-		pw.println(memoryBean.getHeapMemoryUsage().getUsed());
-		nombreExec ++; 
+		//pw.println(memoryBean.getHeapMemoryUsage().getUsed()); //Récupérer les informations mémoire.
+		//nombreExec ++; 
+		
 		if(listeVilles.isEmpty()){
 			
 			if(calculerDistance(cheminActuel) < distanceOptimum){
