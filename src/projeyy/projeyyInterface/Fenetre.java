@@ -36,7 +36,9 @@ public class Fenetre extends JFrame implements Observer {
 	//taille de la fenetre
 	int tailleX = 1000;
 	int tailleY = 1000;
+	
 	int nbrVille = 6;
+	protected AlgoEnum algo;
 
 // dï¿½claration des JPanel
 	private JPanel generalPan = new JPanel();
@@ -112,9 +114,21 @@ public class Fenetre extends JFrame implements Observer {
 		lancer.addActionListener(
 				new ActionListener(){ 
 					public void actionPerformed(ActionEvent event){
-						monAlgoBrutForce3.execute();}
+						switch(algo){
+							case BackTrack:
+								monAlgoBacktrack.execute();
+								break;
+							case Genetique:
+								monAlgoGenetique.execute();
+								break;
+							default:
+								monAlgoBrutForce3.execute();
+								break;
+								
+						}
 					}
-				);
+				}
+			);
 		fichier.add(lancer);
 		fichier.add(save);
 		fichier.add(charger);
@@ -150,6 +164,7 @@ public class Fenetre extends JFrame implements Observer {
 				JOptionPane jop = new JOptionPane(), jop2 = new JOptionPane();
 			    String nb = JOptionPane.showInputDialog(null, "Veuillez Choisir le nombre de ville !", "nombres villes", JOptionPane.QUESTION_MESSAGE);
 			    JOptionPane.showMessageDialog(null, "Vous avez choisi " + nb + " villes", "Choix effectué", JOptionPane.INFORMATION_MESSAGE);
+			    nbrVille = Integer.parseInt(nb);
 			}
 		});
 		preference.add(nbVille);
@@ -158,8 +173,8 @@ public class Fenetre extends JFrame implements Observer {
 		      public void actionPerformed(ActionEvent arg0) {
 		        JOptionPane jop = new JOptionPane();        
 		        String mess = "Bienvenu ! \n Voici l'application du problème du voyageur de commerce (TSP) !\n";
-		        mess += "Créé par des étudiants dans le cadre d'un projet tutoré \n";
-		        mess += "\n Loïc Wisnieswki, Anthony Chaillot, Romain Hagemann et Borrossi Lucie. \n";
+		        mess += "Créé par des étudiants dans le cadre d'un projet tutoré :  \n";
+		        mess += "\n Loïc Wisnieswki, Anthony Chaillot, Romain Hagemann et  Lucie Borrossi . \n";
 		        mess += "\n Enjoy !";        
 		        JOptionPane.showMessageDialog(null, mess, "à propos", JOptionPane.INFORMATION_MESSAGE);        
 		      }            
@@ -182,21 +197,24 @@ public class Fenetre extends JFrame implements Observer {
 	 class BrutForce3Listener implements ActionListener{
 		    //Redéfinition de la méthode actionPerformed()
 		    public void actionPerformed(ActionEvent arg0) {
-		      northLabel.setText("L'algorithme actuellement exécuté est : BruteForce 3");        
+		      northLabel.setText("L'algorithme actuellement exécuté est : BruteForce 3");
+		      algo = AlgoEnum.BrutForce3;
 		    }
 	 }
 	 
 	 class BacktrackListener implements ActionListener{
 		    //Redéfinition de la méthode actionPerformed()
 		    public void actionPerformed(ActionEvent arg0) {
-		      northLabel.setText("L'algorithme actuellement exécuté est : MST");        
+		      northLabel.setText("L'algorithme actuellement exécuté est : MST"); 
+		      algo = AlgoEnum.BackTrack;
 		    }
 	 }
 	 
 	 class GenetiqueListener implements ActionListener{
 		    //Redéfinition de la méthode actionPerformed()
 		    public void actionPerformed(ActionEvent arg0) {
-		      northLabel.setText("L'algorithme actuellement exécuté est : Genetique");        
+		      northLabel.setText("L'algorithme actuellement exécuté est : Genetique"); 
+		      algo = AlgoEnum.Genetique;
 		    }
 	 }
 	 
