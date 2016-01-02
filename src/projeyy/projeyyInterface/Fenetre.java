@@ -58,10 +58,8 @@ public class Fenetre extends JFrame implements Observer {
 	private JMenuItem quitter = new JMenuItem("Quitter");
 	
 // item de Prï¿½fï¿½rence
-	private JRadioButtonMenuItem brutforce = new JRadioButtonMenuItem("Brutforce");
-	private JRadioButtonMenuItem brutforce2 = new JRadioButtonMenuItem("Brutforce 2");
 	private JRadioButtonMenuItem brutforce3 = new JRadioButtonMenuItem("Brutforce 3");
-	private JRadioButtonMenuItem mst = new JRadioButtonMenuItem("MST");
+	private JRadioButtonMenuItem backtrack = new JRadioButtonMenuItem("Backtrack");
 	private JRadioButtonMenuItem genetique = new JRadioButtonMenuItem("Genetique");
 	private JMenuItem nbVille = new JMenuItem("Nombre de ville");
 	
@@ -98,6 +96,7 @@ public class Fenetre extends JFrame implements Observer {
 	
 	public void initMenu(){
 	// menu fichier
+		lancer.addActionListener(new ActionListener(){ public void actionPerformed(ActionEvent event){BrutForce3 monAlgo = new BrutForce3(6); monAlgo.execute();}});
 		fichier.add(lancer);
 		fichier.add(save);
 		fichier.add(charger);
@@ -106,23 +105,17 @@ public class Fenetre extends JFrame implements Observer {
 		quitter.addActionListener(new ActionListener(){ public void actionPerformed(ActionEvent event){System.exit(0);}});
 		fichier.add(quitter);
 	// menu preference
-		brutforce.addActionListener(new BrutForceListener());
-		brutforce2.addActionListener(new BrutForce2Listener());
 		brutforce3.addActionListener(new BrutForce3Listener());
-		mst.addActionListener(new MstListener());
+		backtrack.addActionListener(new BacktrackListener());
 		genetique.addActionListener(new GenetiqueListener());
 		
-		bg.add(brutforce);
-		bg.add(brutforce2);
 		bg.add(brutforce3);
-		bg.add(mst);
+		bg.add(backtrack);
 		bg.add(genetique);
 		
 		
-		choixAlgo.add(brutforce);
-		choixAlgo.add(brutforce2);
 		choixAlgo.add(brutforce3);
-		choixAlgo.add(mst);
+		choixAlgo.add(backtrack);
 		choixAlgo.add(genetique);
 		
 		brutforce3.setSelected(true);
@@ -154,21 +147,6 @@ public class Fenetre extends JFrame implements Observer {
 		return centerPan;
 	}
 	
-	//class interne
-	 class BrutForceListener implements ActionListener{
-		    //Redéfinition de la méthode actionPerformed()
-		    public void actionPerformed(ActionEvent arg0) {
-		      northLabel.setText("L'algorithme actuellement exécuté est : BruteForce");        
-		    }
-	}
-	 
-	 class BrutForce2Listener implements ActionListener{
-		    //Redéfinition de la méthode actionPerformed()
-		    public void actionPerformed(ActionEvent arg0) {
-		      northLabel.setText("L'algorithme actuellement exécuté est : BruteForce 2");        
-		    }
-	 }
-	 
 	 class BrutForce3Listener implements ActionListener{
 		    //Redéfinition de la méthode actionPerformed()
 		    public void actionPerformed(ActionEvent arg0) {
@@ -176,7 +154,7 @@ public class Fenetre extends JFrame implements Observer {
 		    }
 	 }
 	 
-	 class MstListener implements ActionListener{
+	 class BacktrackListener implements ActionListener{
 		    //Redéfinition de la méthode actionPerformed()
 		    public void actionPerformed(ActionEvent arg0) {
 		      northLabel.setText("L'algorithme actuellement exécuté est : MST");        
