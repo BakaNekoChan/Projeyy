@@ -21,6 +21,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
 
+import projey.algorithme.Algorithme;
 import projey.algorithme.BrutForce3;
 
 import javax.swing.JCheckBox;
@@ -96,13 +97,24 @@ public class Fenetre extends JFrame implements Observer {
 	
 	public void initMenu(){
 	// menu fichier
-		lancer.addActionListener(new ActionListener(){ public void actionPerformed(ActionEvent event){BrutForce3 monAlgo = new BrutForce3(6); monAlgo.execute();}});
+		lancer.addActionListener(
+				new ActionListener(){ 
+					public void actionPerformed(ActionEvent event){
+						Algorithme monAlgo = new BrutForce3(6); 
+						monAlgo.execute();}
+					}
+				);
 		fichier.add(lancer);
 		fichier.add(save);
 		fichier.add(charger);
 		fichier.addSeparator();
 	//pour quitter l'application 
-		quitter.addActionListener(new ActionListener(){ public void actionPerformed(ActionEvent event){System.exit(0);}});
+		quitter.addActionListener(
+					new ActionListener(){
+						public void actionPerformed(ActionEvent event)
+							{System.exit(0);}
+						}
+					);
 		fichier.add(quitter);
 	// menu preference
 		brutforce3.addActionListener(new BrutForce3Listener());
