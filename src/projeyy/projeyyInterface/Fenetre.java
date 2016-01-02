@@ -22,7 +22,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
 
 import projey.algorithme.Algorithme;
+import projey.algorithme.BackTrack;
 import projey.algorithme.BrutForce3;
+import projey.algorithme.Genetique;
 
 import javax.swing.JCheckBox;
 import javax.swing.JCheckBoxMenuItem;
@@ -30,7 +32,8 @@ import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 
 public class Fenetre extends JFrame implements Observer {
-//taille de la fenetre
+
+	//taille de la fenetre
 	int tailleX = 1000;
 	int tailleY = 1000;
 	int nbrVille = 6;
@@ -67,10 +70,14 @@ public class Fenetre extends JFrame implements Observer {
 	
 // item de ï¿½ propos
 	private JMenuItem apropos = new JMenuItem("?");
-	
+	protected Algorithme monAlgoBrutForce3 = new BrutForce3(nbrVille);
+	protected Algorithme monAlgoBacktrack = new BackTrack(nbrVille);
+	protected Algorithme monAlgoGenetique = new Genetique(nbrVille);
+
 	
 	
 	public Fenetre(){
+		
 		this.setTitle("TSP");
 		this.setSize(tailleX, tailleY);
 		this.setLocationRelativeTo(null);
@@ -101,8 +108,7 @@ public class Fenetre extends JFrame implements Observer {
 		lancer.addActionListener(
 				new ActionListener(){ 
 					public void actionPerformed(ActionEvent event){
-						Algorithme monAlgo = new BrutForce3(nbrVille); 
-						monAlgo.execute();}
+						monAlgoBrutForce3.execute();}
 					}
 				);
 		fichier.add(lancer);
@@ -138,7 +144,7 @@ public class Fenetre extends JFrame implements Observer {
 		nbVille.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
 				JOptionPane jop = new JOptionPane(), jop2 = new JOptionPane();
-			    String nb = jop.showInputDialog(null, "Veuillez Choisir le nombres de ville !", "nombres villes", JOptionPane.QUESTION_MESSAGE);
+			    String nb = jop.showInputDialog(null, "Veuillez Choisir le nombre de ville !", "nombres villes", JOptionPane.QUESTION_MESSAGE);
 			    jop2.showMessageDialog(null, "Vous avez choisi " + nb + " villes", "Choix effectué", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
