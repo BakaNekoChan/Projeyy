@@ -77,6 +77,10 @@ public class Fenetre extends JFrame implements Observer {
 	
 	
 	public Fenetre(){
+		this.monAlgoBacktrack.addObserver(this);
+		this.monAlgoGenetique.addObserver(this);
+		this.monAlgoBrutForce3.addObserver(this);
+
 		
 		this.setTitle("TSP");
 		this.setSize(tailleX, tailleY);
@@ -144,8 +148,8 @@ public class Fenetre extends JFrame implements Observer {
 		nbVille.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
 				JOptionPane jop = new JOptionPane(), jop2 = new JOptionPane();
-			    String nb = jop.showInputDialog(null, "Veuillez Choisir le nombre de ville !", "nombres villes", JOptionPane.QUESTION_MESSAGE);
-			    jop2.showMessageDialog(null, "Vous avez choisi " + nb + " villes", "Choix effectué", JOptionPane.INFORMATION_MESSAGE);
+			    String nb = JOptionPane.showInputDialog(null, "Veuillez Choisir le nombre de ville !", "nombres villes", JOptionPane.QUESTION_MESSAGE);
+			    JOptionPane.showMessageDialog(null, "Vous avez choisi " + nb + " villes", "Choix effectué", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		preference.add(nbVille);
@@ -156,7 +160,7 @@ public class Fenetre extends JFrame implements Observer {
 		        String mess = "Bienvenu ! \n Voici l'application du problème du voyageur de commerce (TSP) !\n";
 		        mess += "Créé par des étudiants dans le cadre d'un projet tutoré \n";
 		        mess += "\n Enjoy !";        
-		        jop.showMessageDialog(null, mess, "à propos", JOptionPane.INFORMATION_MESSAGE);        
+		        JOptionPane.showMessageDialog(null, mess, "à propos", JOptionPane.INFORMATION_MESSAGE);        
 		      }            
 		    });
 		aPropos.add(apropos);
