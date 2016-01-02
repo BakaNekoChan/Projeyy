@@ -32,7 +32,8 @@ import javax.swing.ImageIcon;
 public class Fenetre extends JFrame implements Observer {
 //taille de la fenetre
 	int tailleX = 1000;
-	int tailleY = 1000;	
+	int tailleY = 1000;
+	int nbrVille = 6;
 
 // dï¿½claration des JPanel
 	private JPanel generalPan = new JPanel();
@@ -100,7 +101,7 @@ public class Fenetre extends JFrame implements Observer {
 		lancer.addActionListener(
 				new ActionListener(){ 
 					public void actionPerformed(ActionEvent event){
-						Algorithme monAlgo = new BrutForce3(6); 
+						Algorithme monAlgo = new BrutForce3(nbrVille); 
 						monAlgo.execute();}
 					}
 				);
@@ -111,8 +112,9 @@ public class Fenetre extends JFrame implements Observer {
 	//pour quitter l'application 
 		quitter.addActionListener(
 					new ActionListener(){
-						public void actionPerformed(ActionEvent event)
-							{System.exit(0);}
+						public void actionPerformed(ActionEvent event){
+							System.exit(0);
+							}
 						}
 					);
 		fichier.add(quitter);
@@ -133,6 +135,13 @@ public class Fenetre extends JFrame implements Observer {
 		brutforce3.setSelected(true);
 		
 		preference.add(choixAlgo);
+		nbVille.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0){
+				JOptionPane jop = new JOptionPane(), jop2 = new JOptionPane();
+			    String nb = jop.showInputDialog(null, "Veuillez Choisir le nombres de ville !", "nombres villes", JOptionPane.QUESTION_MESSAGE);
+			    jop2.showMessageDialog(null, "Vous avez choisi " + nb + " villes", "Choix effectué", JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
 		preference.add(nbVille);
 	//menu apropos
 		apropos.addActionListener(new ActionListener(){
