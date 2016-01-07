@@ -10,6 +10,7 @@ import projeyy.mst2.CircuitOpti;
 
 public class Main {
 
+	// fonction principale permettant dafficher une matrice générée aléatoirement et une arbre trié
 	public static void main(String[] args) {
 		double [][]matrice = Generator.generateMatrice(7);
 		Generator.printMatrice(matrice);
