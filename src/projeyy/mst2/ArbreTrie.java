@@ -13,9 +13,10 @@ public class ArbreTrie {
 	private TreeSet<CoupleDis> ts= new TreeSet<CoupleDis>();
 	private final int nbVille;
 	
-	//rempli ts en triant les ar�tes par distance
+	//remplis ts de CoupleDis en triant les arêtes par distance
 	public ArbreTrie(double [][] m){
-		nbVille=m.length;
+		// Donne a nbVille le nombre de ville présent dans la matrice
+		nbVille=m.length;					
 		for (int i=0; i<m.length; i++){
 			for(int j=0; j<i; j++){
 				ts.add(new CoupleDis(i, j, m[i][j]));
@@ -23,7 +24,7 @@ public class ArbreTrie {
 		}
 	}
 	
-	//retourne une liste d'ar�tes correspondant � un arbre couvrant minimum
+	//retourne une liste d'arêtes correspondant à un arbre couvrant minimum
 	public List<CoupleDis> minArbreCouvrant(){
 		ArrayList<CoupleDis> list = new ArrayList<CoupleDis>();
 		HashSet<Integer> connexClasse[] = new HashSet[nbVille];
@@ -31,15 +32,16 @@ public class ArbreTrie {
 			connexClasse[i] = new HashSet<Integer>();
 			connexClasse[i].add(i);
 		}
-		//ajout premiere arete (i,j)/7
+		//ajout de la premiere arête (i,j) vu que la première est forcément la plus courte
 		int i = ts.first().getI();
 		int j = ts.first().getJ();
-		connexClasse[i].add(j) ; //)(connexClasse[ts.first().getJ()]);
+		connexClasse[i].add(j) ; 
 		connexClasse [j] = connexClasse[i];
 		list.add(ts.first());
-		//on ^prends les arretes p�r ordre croissant
+		
+		//On prends les arêtes par ordre croissant
 		for (CoupleDis cur : ts){
-			//si les extremitesd el'arrete sont dans des CC differents
+			//si les extremités les arête sont dans des ConnexClasse differentes
 			if(!connexClasse[cur.getJ()].contains(cur.getI())){
 				connexClasse[cur.getI()].addAll(connexClasse[cur.getJ()]);
 				for (int j2 : connexClasse[cur.getJ()]){
@@ -51,11 +53,12 @@ public class ArbreTrie {
 		return list;
 	}
 	
-
+	// Retourne le nombre de ville
 	public int getNbVille(){
 		return nbVille;
 	}
 	
+	// Retourne 
 	public TreeSet<CoupleDis> getTs(){
 		return ts;
 	}
