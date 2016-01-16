@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
+import java.lang.management.ThreadMXBean;
 import java.util.ArrayList;
 import projeyy.generator.*;
 
@@ -15,20 +16,39 @@ import projeyy.generator.*;
 //d'exécution et empêche la surcharge de la mémoire.
 
 public class BrutForce {
-	private static final int NOMBRE_VILLES = 12;
+	private static int NOMBRE_VILLES = 0;
 	private static int nombreExec = 0;
 	private static ArrayList<ArrayList<Integer>> listeCheminsOptimums = new ArrayList<ArrayList<Integer>>();
 	private static double distanceOptimum;
 	private static double[][] maMatrice = Generator.generateMatrice(NOMBRE_VILLES);
 	private static PrintWriter pw = createPrintWriter();
+	private static ThreadMXBean bean = ManagementFactory.getThreadMXBean(); 
 	private static MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
 	
 
 	public static void main(String[] args) {
-		generateTree();
-		System.out.println(listeCheminsOptimums);
-		System.out.println(distanceOptimum);
-		System.out.println(nombreExec);		
+		for(int i = 9; i<10; i++){
+			ArrayList<double[][]> testMatrix = Generator.useFileSerialize("Points:" + i + "_Matrices:20");
+			NOMBRE_VILLES = testMatrix.get(0).length;
+			long avgCPUTime = 0;
+			double avgDist = 0;
+			long moyNbrExec = 0;
+			for(double[][] matrice : testMatrix){
+				long t1 = bean.getCurrentThreadCpuTime();
+				maMatrice = matrice;
+				nombreExec = 0;
+				generateTree();
+				pw.close();
+				System.out.println(bean.getCurrentThreadCpuTime() - t1);
+				moyNbrExec += nombreExec;
+				avgCPUTime += bean.getCurrentThreadCpuTime() - t1;
+				avgDist += distanceOptimum;
+			}
+			
+			System.out.println(moyNbrExec / testMatrix.size());
+			System.out.println("Moyenne distance " + i + " villes " + avgDist/testMatrix.size());
+			System.out.println("Moyenne temps CPU "+ i + " villes " +avgCPUTime/testMatrix.size());
+		}
 		pw.close();
 	}
 	
@@ -38,7 +58,6 @@ public class BrutForce {
 		for(int i = 0; i < NOMBRE_VILLES; i++){
 			listeVilles.add(i);
 		}
-		System.out.println(glouton(listeVilles));
 		distanceOptimum = calculerDistance(glouton(listeVilles));
 		listeCheminsOptimums.add(listeVilles);
 		

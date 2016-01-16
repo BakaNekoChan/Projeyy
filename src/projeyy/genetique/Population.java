@@ -1,5 +1,7 @@
 package projeyy.genetique;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadMXBean;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -11,15 +13,36 @@ public class Population {
 	private MyArrayList<Individu> maPop;
 	private double[][] matriceDistance;
 	private ArrayList<Point> villes;
-	
+
 	public static void main(String[] args) {
-		Population p = new Population(Generator.generatePlane(10), 500);
-		Generator.printMatrice(p.matriceDistance);
-		for(int i = 0; i < 10; i++){
-			System.out.println(p.getBestIndividu());
-			System.out.println(p.getBestIndividu().getDistanceTotale());
-			p.genererPopulationSuivante1();
+		ThreadMXBean bean = ManagementFactory.getThreadMXBean(); 
+
+		for(int i = 3; i<11; i++){
+			ArrayList<double[][]> testMatrix = Generator.useFileSerialize("Points:" + i + "_Matrices:20");
+			long avgCPUTime = 0;
+			double avgDist = 0;
+			long moyNbrExec = 0;
+			for(double[][] matrice : testMatrix){
+				long t1 = bean.getCurrentThreadCpuTime();
+				Population p = new Population(matrice, 500);
+				for(int j = 0; j < 100; j++){
+					p.genererPopulationSuivante1();
+				}
+				avgCPUTime += bean.getCurrentThreadCpuTime() - t1;
+				avgDist += p.getBestIndividu().getDistanceTotale();
+			}
+			
+			System.out.println(moyNbrExec / testMatrix.size());
+			System.out.println("Moyenne distance " + i + " villes " + avgDist/testMatrix.size());
+			System.out.println("Moyenne temps CPU "+ i + " villes " +avgCPUTime/testMatrix.size());
 		}
+	}
+	
+	public Population(double[][] matrice, int nbIndividuBase){
+		this.villes = null;
+		this.maPop = new MyArrayList<Individu>();
+		matriceDistance = matrice;
+		genererPopulationBase(nbIndividuBase);
 	}
 	
 	public Population(ArrayList<Point> villes, int nbIndividuBase){

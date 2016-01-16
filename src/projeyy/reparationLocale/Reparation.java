@@ -7,23 +7,43 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
+import java.lang.management.ThreadMXBean;
 import java.util.ArrayList;
 
 import projeyy.generator.Generator;
 
 public class Reparation {
-	private static final int NOMBRE_VILLES = 50;
+	private static int NOMBRE_VILLES = 0;
 	private static double[][] maMatrice = Generator.generateMatrice(NOMBRE_VILLES);
 	private static PrintWriter pw = createPrintWriter();
 	private static MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
+	private static ThreadMXBean bean = ManagementFactory.getThreadMXBean(); 
 	
 	public static void main(String[] args) {
 		ArrayList<Integer> chemin = new ArrayList<Integer>();
-		for (int i = 0; i < NOMBRE_VILLES; i++){
-			chemin.add(i);
+		
+		for(int i = 3; i<11; i++){
+			ArrayList<double[][]> testMatrix = Generator.useFileSerialize("Points:" + i + "_Matrices:20");
+			long avgCPUTime = 0;
+			double avgDist = 0;
+			
+			for(double[][] matrice: testMatrix){
+				chemin.clear();
+				maMatrice = matrice;
+				NOMBRE_VILLES = maMatrice.length;
+				for (int j = 0; j < NOMBRE_VILLES; j++){
+					chemin.add(j);
+				}
+				long t1 = bean.getCurrentThreadCpuTime();
+				reparation(chemin, 100);
+				avgDist += calculerDistance(chemin);
+				avgCPUTime += bean.getCurrentThreadCpuTime() - t1;
+
+				pw.close();
+			}
+			System.out.println("Moyenne distance ville " + i + " :" + avgDist/testMatrix.size());
+			System.out.println("Moyenne temps ville " + i + " :" + avgCPUTime/testMatrix.size());
 		}
-		reparation(chemin, 500);
-		pw.close();
 	}
 
 
@@ -51,7 +71,7 @@ public class Reparation {
 				cheminRepare.set(min2, echange);
 				
 				if(calculerDistance(cheminRepare) < calculerDistance(cheminDepart)) cheminDepart = cheminRepare;
-				System.out.println(calculerDistance(cheminDepart));
+				//System.out.println(calculerDistance(cheminDepart));
 			}
 		}
 	}

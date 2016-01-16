@@ -7,24 +7,44 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
+import java.lang.management.ThreadMXBean;
 import java.util.ArrayList;
 import projeyy.generator.*;
 
 public class BrutForce {
-	private static final int NOMBRE_VILLES = 9;
+	private static int NOMBRE_VILLES;
 	private static int nombreExec = 0;
 	private static ArrayList<ArrayList<Integer>> listeCheminsOptimums = new ArrayList<ArrayList<Integer>>();
 	private static double distanceOptimum;
 	private static double[][] maMatrice = Generator.generateMatrice(NOMBRE_VILLES);
 	private static MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
+	private static ThreadMXBean bean = ManagementFactory.getThreadMXBean(); 
 	private static PrintWriter pw = createPrintWriter();
 
 
 	public static void main(String[] args) {
-		generateTree();
-		System.out.println(listeCheminsOptimums);
-		System.out.println(distanceOptimum);
-		System.out.println(nombreExec);		
+		for(int i = 3; i<11; i++){
+			ArrayList<double[][]> testMatrix = Generator.useFileSerialize("Points:" + i + "_Matrices:20");
+			NOMBRE_VILLES = testMatrix.get(0).length;
+			long avgCPUTime = 0;
+			double avgDist = 0;
+			double moyExec = 0;
+			for(double[][] matrice : testMatrix){
+				long t1 = bean.getCurrentThreadCpuTime();
+				maMatrice = matrice;
+				nombreExec = 0;
+				generateTree();
+				pw.close();
+				System.out.println(bean.getCurrentThreadCpuTime() - t1);
+				moyExec += nombreExec;
+				avgCPUTime += bean.getCurrentThreadCpuTime() - t1;
+				avgDist += distanceOptimum;
+			}
+			System.out.println(moyExec / testMatrix.size());
+			System.out.println("Moyenne distance " + i + " villes " + avgDist/testMatrix.size());
+			System.out.println("Moyenne temps CPU "+ i + " villes " +avgCPUTime/testMatrix.size());
+		}
+	
 		pw.close();
 	}
 	

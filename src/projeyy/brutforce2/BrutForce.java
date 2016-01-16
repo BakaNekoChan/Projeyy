@@ -7,13 +7,14 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
+import java.lang.management.ThreadMXBean;
 import java.util.ArrayList;
 import projeyy.generator.*;
 
 //Cette version de BruteForce ne stocke pas tous les chemins dans un tableau.
 
 public class BrutForce {
-	private static final int NOMBRE_VILLES = 9;
+	private static int NOMBRE_VILLES = 0;
 	private static int nombreExec = 0; //Stocke le nombre de noeuds de l'arbre de résolution
 	
 	//Permet de stocker tous les chemins permettant d'obtenir la distanceOptimum
@@ -23,29 +24,36 @@ public class BrutForce {
 	private static double distanceOptimum;
 	
 	//Matrice des distance, voir la classe Generator pour plus d'information
-	private static double[][] maMatrice = Generator.generateMatrice(NOMBRE_VILLES);
+	private static double[][] maMatrice = null;
 	
 	//Objet permettant d'observer la consommation mémoire
 	private static MemoryMXBean memoryBean = ManagementFactory.getMemoryMXBean();
-	
+	private static ThreadMXBean bean = ManagementFactory.getThreadMXBean(); 
 	//Objet permettant d'écrire dans un fichier. Je stocke les différents de la mémoire pour afficher un
 	//graphique sur scilab par la suite.
 	private static PrintWriter pw = createPrintWriter();
 
 
 	public static void main(String[] args) {
-		generateTree();
-		//Décomenter pour afficher la matrice.
-		/*for(int i = 0; i < maMatrice.length; i++){
-			for(int j = 0; j < maMatrice.length; j++){
-				System.out.print(maMatrice[i][j] + " ");
+		for(int i = 9; i<10; i++){
+			ArrayList<double[][]> testMatrix = Generator.useFileSerialize("Points:" + i + "_Matrices:20");
+			NOMBRE_VILLES = testMatrix.get(0).length;
+			long avgCPUTime = 0;
+			double avgDist = 0;
+			for(double[][] matrice : testMatrix){
+				long t1 = bean.getCurrentThreadCpuTime();
+				maMatrice = matrice;
+				nombreExec = 0;
+				generateTree();
+				System.out.println(nombreExec);
+				System.out.println(bean.getCurrentThreadCpuTime() - t1);
+				avgCPUTime += bean.getCurrentThreadCpuTime() - t1;
+				avgDist += distanceOptimum;
 			}
-			System.out.println();
-		}*/
-		
-		System.out.println(listeCheminsOptimums);
-		System.out.println(distanceOptimum);
-		System.out.println(nombreExec);		
+			System.out.println("Moyenne distance " + i + " villes " + avgDist/testMatrix.size());
+			System.out.println("Moyenne temps CPU "+ i + " villes " +avgCPUTime/testMatrix.size());
+		}
+	
 		pw.close();
 	}
 	
@@ -62,6 +70,7 @@ public class BrutForce {
 		
 		
 		generateTree(listeVilles, new ArrayList<Integer>());
+		pw.close();
 	}
 	
 
