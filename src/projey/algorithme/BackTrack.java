@@ -53,8 +53,7 @@ public class BackTrack extends Algorithme{
 
 	@Override
 	public double getDistancePlusCourtChemin() {
-		// TODO Auto-generated method stub
-		return 0;
+		return distanceOptimum;
 	}
 	
 	@Override
@@ -74,7 +73,7 @@ public class BackTrack extends Algorithme{
 		for(int i = 0; i < nbVilles; i++){
 			listeVilles.add(i);
 		}
-		System.out.println(glouton(listeVilles));
+		//System.out.println(glouton(listeVilles));
 		distanceOptimum = calculerDistance(glouton(listeVilles));
 		listeCheminsOptimums.add(listeVilles);
 
@@ -94,6 +93,7 @@ public class BackTrack extends Algorithme{
 				listeCheminsOptimums.clear();
 				listeCheminsOptimums.add(cheminActuel);
 				distanceOptimum = calculerDistance(cheminActuel);
+				notifierObservateurs();
 			}
 			else if(calculerDistance(cheminActuel) == distanceOptimum){
 				listeCheminsOptimums.add(cheminActuel);

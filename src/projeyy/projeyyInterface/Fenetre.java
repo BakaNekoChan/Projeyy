@@ -44,7 +44,7 @@ public class Fenetre extends JFrame implements Observer {
 	private JPanel generalPan = new JPanel();
 	private PanChemin centerPan = new PanChemin();
 	private PanDistance bottomPan = new PanDistance();
-// déclaration JLabel
+// dï¿½claration JLabel
 	private JLabel northLabel = new JLabel("Bienvenu sur le TSP !");
 	private Font courier = new Font("Courier",Font.BOLD,14);
 	
@@ -54,8 +54,8 @@ public class Fenetre extends JFrame implements Observer {
 
 	
 	private JMenu fichier = new JMenu("Fichier");
-	private JMenu preference = new JMenu("Préférence");
-	private JMenu aPropos = new JMenu("à propos");
+	private JMenu preference = new JMenu("Prï¿½fï¿½rence");
+	private JMenu aPropos = new JMenu("ï¿½ propos");
 	private JMenu choixAlgo = new JMenu("Choix de l'algorithme");
 	
 // item de Fichier
@@ -79,10 +79,10 @@ public class Fenetre extends JFrame implements Observer {
 	
 	
 	public Fenetre(){
+		algo = AlgoEnum.BrutForce3;
 		this.monAlgoBacktrack.addObserver(this);
 		this.monAlgoGenetique.addObserver(this);
 		this.monAlgoBrutForce3.addObserver(this);
-
 		
 		this.setTitle("TSP");
 		this.setSize(tailleX, tailleY);
@@ -114,15 +114,19 @@ public class Fenetre extends JFrame implements Observer {
 		lancer.addActionListener(
 				new ActionListener(){ 
 					public void actionPerformed(ActionEvent event){
+						ThreadAlgo exe;
 						switch(algo){
 							case BackTrack:
-								monAlgoBacktrack.execute();
+								exe = new ThreadAlgo(monAlgoBacktrack);
+								exe.start();
 								break;
 							case Genetique:
-								monAlgoGenetique.execute();
+								exe = new ThreadAlgo(monAlgoGenetique);
+								exe.start();
 								break;
 							default:
-								monAlgoBrutForce3.execute();
+								exe = new ThreadAlgo(monAlgoBrutForce3);
+								exe.start();
 								break;
 								
 						}
@@ -163,8 +167,20 @@ public class Fenetre extends JFrame implements Observer {
 			public void actionPerformed(ActionEvent arg0){
 				JOptionPane jop = new JOptionPane(), jop2 = new JOptionPane();
 			    String nb = JOptionPane.showInputDialog(null, "Veuillez Choisir le nombre de ville !", "nombres villes", JOptionPane.QUESTION_MESSAGE);
-			    JOptionPane.showMessageDialog(null, "Vous avez choisi " + nb + " villes", "Choix effectué", JOptionPane.INFORMATION_MESSAGE);
+			    if(nbVille != null){
+			    JOptionPane.showMessageDialog(null, "Vous avez choisi " + nb + " villes", "Choix effectuï¿½", JOptionPane.INFORMATION_MESSAGE);
 			    nbrVille = Integer.parseInt(nb);
+			    monAlgoBrutForce3 = new BrutForce3(nbrVille);
+			    monAlgoBacktrack = new BackTrack(nbrVille);
+			    monAlgoGenetique= new Genetique(nbrVille,10,10);
+				Fenetre.this.monAlgoBacktrack.addObserver(Fenetre.this);
+				Fenetre.this.monAlgoGenetique.addObserver(Fenetre.this);
+				Fenetre.this.monAlgoBrutForce3.addObserver(Fenetre.this);
+			    }
+			    else{
+				    JOptionPane.showMessageDialog(null, "Vous n'avez pas choisi, le nombre de villes sera donc 5.","Ok", JOptionPane.INFORMATION_MESSAGE);
+				    nbrVille = 5;
+			    }
 			}
 		});
 		preference.add(nbVille);
@@ -172,11 +188,11 @@ public class Fenetre extends JFrame implements Observer {
 		apropos.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent arg0) {
 		        JOptionPane jop = new JOptionPane();        
-		        String mess = "Bienvenu ! \n Voici l'application du problème du voyageur de commerce (TSP) !\n";
-		        mess += "Créé par des étudiants dans le cadre d'un projet tutoré :  \n";
-		        mess += "\n Loïc Wisnieswki, Anthony Chaillot, Romain Hagemann et  Lucie Borrossi . \n";
+		        String mess = "Bienvenu ! \n Voici l'application du problï¿½me du voyageur de commerce (TSP) !\n";
+		        mess += "Crï¿½ï¿½ par des ï¿½tudiants dans le cadre d'un projet tutorï¿½ :  \n";
+		        mess += "\n Loï¿½c Wisnieswki, Anthony Chaillot, Romain Hagemann et  Lucie Borrossi . \n";
 		        mess += "\n Enjoy !";        
-		        JOptionPane.showMessageDialog(null, mess, "à propos", JOptionPane.INFORMATION_MESSAGE);        
+		        JOptionPane.showMessageDialog(null, mess, "ï¿½ propos", JOptionPane.INFORMATION_MESSAGE);        
 		      }            
 		    });
 		aPropos.add(apropos);
@@ -195,25 +211,25 @@ public class Fenetre extends JFrame implements Observer {
 	}
 	
 	 class BrutForce3Listener implements ActionListener{
-		    //Redéfinition de la méthode actionPerformed()
+		    //Redï¿½finition de la mï¿½thode actionPerformed()
 		    public void actionPerformed(ActionEvent arg0) {
-		      northLabel.setText("L'algorithme actuellement exécuté est : BruteForce 3");
+		      northLabel.setText("L'algorithme actuellement exï¿½cutï¿½ est : BruteForce 3");
 		      algo = AlgoEnum.BrutForce3;
 		    }
 	 }
 	 
 	 class BacktrackListener implements ActionListener{
-		    //Redéfinition de la méthode actionPerformed()
+		    //Redï¿½finition de la mï¿½thode actionPerformed()
 		    public void actionPerformed(ActionEvent arg0) {
-		      northLabel.setText("L'algorithme actuellement exécuté est : MST"); 
+		      northLabel.setText("L'algorithme actuellement exï¿½cutï¿½ est : BackTrack"); 
 		      algo = AlgoEnum.BackTrack;
 		    }
 	 }
 	 
 	 class GenetiqueListener implements ActionListener{
-		    //Redéfinition de la méthode actionPerformed()
+		    //Redï¿½finition de la mï¿½thode actionPerformed()
 		    public void actionPerformed(ActionEvent arg0) {
-		      northLabel.setText("L'algorithme actuellement exécuté est : Genetique"); 
+		      northLabel.setText("L'algorithme actuellement exï¿½cutï¿½ est : Genetique"); 
 		      algo = AlgoEnum.Genetique;
 		    }
 	 }
@@ -222,10 +238,10 @@ public class Fenetre extends JFrame implements Observer {
 	 public void update(Observable o, Object arg){
 
 			bottomPan.setDistanceP(bottomPan.getDistance());
-			bottomPan.setDistance(((BrutForce3) o).getDistancePlusCourtChemin());
+			bottomPan.setDistance(((Algorithme) o).getDistancePlusCourtChemin());
 			centerPan.viderTout();
-			centerPan.setArrayPoint(new ArrayList<Point>(((BrutForce3)o).getPoints()));
-			ArrayList<Integer> ordrePoints = new ArrayList<Integer>(((BrutForce3) o).getPlusCourtChemin());
+			centerPan.setArrayPoint(new ArrayList<Point>(((Algorithme)o).getPoints()));
+			ArrayList<Integer> ordrePoints = new ArrayList<Integer>(((Algorithme) o).getPlusCourtChemin());
 			
 			for(int i = 1; i< ordrePoints.size();i++){
 				centerPan.setArete(centerPan.getPoints().get(ordrePoints.get(i-1)), centerPan.getPoints().get(ordrePoints.get(i)));
